@@ -52,15 +52,38 @@ button, input, textarea, table, select {
     font-weight: 700;
 }
 
-button {
-    touch-action: manipulation;
-}
+button { touch-action: manipulation; }
 
 .app {
     width: 100%;
     max-width: 520px;
     margin: 0 auto;
     padding: 24px 16px 28px;
+}
+
+.online-indicator {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 11px;
+    border: 1px solid #54f0a150;
+    border-radius: 20px;
+    color: var(--green);
+    background: #101b17ee;
+    box-shadow: 0 4px 18px #0005;
+    font-size: 10px;
+}
+
+.online-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px #54f0a1;
 }
 
 .header {
@@ -115,9 +138,7 @@ button {
     cursor: pointer;
 }
 
-.language-select:focus {
-    border-color: var(--gold);
-}
+.language-select:focus { border-color: var(--gold); }
 
 .eyebrow {
     color: var(--gold);
@@ -133,9 +154,7 @@ h1 {
     letter-spacing: -.6px;
 }
 
-h1 span {
-    color: var(--gold);
-}
+h1 span { color: var(--gold); }
 
 .subtitle {
     margin: 10px 0 0;
@@ -175,9 +194,7 @@ h1 span {
     font-size: 17px;
 }
 
-.field {
-    margin-bottom: 17px;
-}
+.field { margin-bottom: 17px; }
 
 label {
     display: block;
@@ -197,6 +214,8 @@ input, textarea {
     padding: 14px;
     font-size: 14px;
     transition: border-color .2s, box-shadow .2s;
+    -webkit-user-select: text;
+    user-select: text;
 }
 
 textarea {
@@ -210,9 +229,7 @@ input:focus, textarea:focus {
     box-shadow: 0 0 0 3px #ffc94a12;
 }
 
-input::placeholder, textarea::placeholder {
-    color: #626c7e;
-}
+input::placeholder, textarea::placeholder { color: #626c7e; }
 
 .hint {
     color: #7f899b;
@@ -237,9 +254,7 @@ input::placeholder, textarea::placeholder {
     transition: transform .15s, filter .15s;
 }
 
-.btn:active {
-    transform: scale(.985);
-}
+.btn:active { transform: scale(.985); }
 
 .btn-primary {
     color: #171109;
@@ -253,9 +268,7 @@ input::placeholder, textarea::placeholder {
     border: 1px solid #ffc94a60;
 }
 
-.calculate-btn {
-    margin-top: 5px;
-}
+.calculate-btn { margin-top: 5px; }
 
 .section-note {
     margin: -8px 0 15px;
@@ -287,30 +300,18 @@ th, td {
     border-bottom: 1px solid #252a34;
 }
 
-th:last-child, td:last-child {
-    text-align: right;
-}
-
-tbody tr:last-child td {
-    border-bottom: 0;
-}
-
-tbody tr:nth-child(even) {
-    background: #ffffff03;
-}
+th:last-child, td:last-child { text-align: right; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:nth-child(even) { background: #ffffff03; }
 
 .gem-value {
     color: var(--blue);
     white-space: nowrap;
 }
 
-.money-value {
-    white-space: nowrap;
-}
+.money-value { white-space: nowrap; }
 
-.result {
-    display: none;
-}
+.result { display: none; }
 
 .result.show {
     display: block;
@@ -392,9 +393,7 @@ tbody tr:nth-child(even) {
     font: 700 11px/2 "GFF-Latin-Bold", Arial, sans-serif;
 }
 
-.copy-btn {
-    margin-top: 13px;
-}
+.copy-btn { margin-top: 13px; }
 
 .status {
     min-height: 16px;
@@ -405,9 +404,7 @@ tbody tr:nth-child(even) {
     margin-top: 10px;
 }
 
-.error {
-    color: #ff7b7b;
-}
+.error { color: #ff7b7b; }
 
 .footer {
     padding: 17px 8px 5px;
@@ -441,16 +438,20 @@ tbody tr:nth-child(even) {
     th, td { padding: 11px 8px; }
     .result-row-value { font-size: 13px; }
     .language-select { max-width: 175px; }
-}
-
-input, textarea {
-    -webkit-user-select: text;
-    user-select: text;
+    .online-indicator { top: 7px; left: 7px; }
 }
 </style>
 </head>
 
 <body>
+
+<!-- Hiển thị số online ở góc trái.
+     Muốn đếm người trên toàn website, hãy cấu hình Firebase ở cuối file. -->
+<div class="online-indicator" aria-live="polite">
+    <span class="online-dot"></span>
+    <span id="onlineText">(-- ONLINE)</span>
+</div>
+
 <main class="app">
 
     <header class="header">
@@ -477,8 +478,10 @@ input, textarea {
         </div>
 
         <div class="eyebrow">FREE FIRE TOOL</div>
-        <h1><span data-i18n="titleFirst">TÍNH KC</span>
-            <span data-i18n="titleLast">GAME</span></h1>
+        <h1>
+            <span data-i18n="titleFirst">TÍNH KC</span>
+            <span data-i18n="titleLast">GAME</span>
+        </h1>
         <p class="subtitle">
             <span data-i18n="subtitle">CÔNG CỤ TÍNH KIM CƯƠNG TỰ ĐỘNG</span><br>
             TÁO GAMING VN 🔥
@@ -596,6 +599,11 @@ input, textarea {
 
 </main>
 
+<!-- Firebase dùng cho bộ đếm online realtime.
+     Chỉ hoạt động sau khi điền cấu hình Firebase của website. -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
 <script>
 "use strict";
 
@@ -628,11 +636,12 @@ let hasCalculated = false;
 let lastPlan = null;
 
 /* ==========================================
-   2. NHẬN DẠNG THIẾT BỊ - KHÔNG HIỂN THỊ
+   2. NHẬN DẠNG THIẾT BỊ - CHẠY NGẦM
 ========================================== */
 function detectDevice() {
     const ua = navigator.userAgent || "";
-    const platform = navigator.userAgentData?.platform || navigator.platform || "";
+    const platform = navigator.userAgentData?.platform ||
+                     navigator.platform || "";
 
     const isIPad =
         /iPad/i.test(ua) ||
@@ -649,30 +658,28 @@ function detectDevice() {
     if (isIPad) {
         type = "tablet";
         os = "iPadOS";
+        model = "iPad";
     } else if (isIPhone) {
         type = "mobile";
         os = "iOS";
+        model = "iPhone";
     } else if (isAndroid) {
         type = isMobile ? "mobile" : "tablet";
         os = "Android";
+        model = isMobile ? "Android phone" : "Android tablet";
     } else if (/Windows/i.test(platform + " " + ua)) {
         type = "desktop";
         os = "Windows";
+        model = "Computer / Laptop";
     } else if (/Mac/i.test(platform + " " + ua)) {
         type = "desktop";
         os = "macOS";
+        model = "Mac / MacBook";
     } else if (/Linux/i.test(platform + " " + ua)) {
         type = "desktop";
         os = "Linux";
+        model = "Computer / Laptop";
     }
-
-    /*
-      Không thể xác định chắc chắn đời iPhone chỉ từ trình duyệt.
-      Không tự gán đời máy khi không có thông tin đáng tin cậy.
-    */
-    if (isIPhone) model = "iPhone (model not verified)";
-    else if (isIPad) model = "iPad";
-    else if (isAndroid) model = "Android device";
 
     return {
         type,
@@ -684,11 +691,11 @@ function detectDevice() {
     };
 }
 
-/* Dữ liệu chỉ dùng nội bộ; không gửi lên máy chủ. */
+/* Thông tin chỉ được phát hiện trong trình duyệt, không gửi đi. */
 const DEVICE_INFO = detectDevice();
 
 /* ==========================================
-   3. HỆ THỐNG 6 NGÔN NGỮ
+   3. HỆ THỐNG NGÔN NGỮ
 ========================================== */
 const TRANSLATIONS = {
     vi: {
@@ -945,14 +952,14 @@ const TRANSLATIONS = {
 };
 
 /* ==========================================
-   4. NGÔN NGỮ TỰ ĐỘNG VÀ CHUYỂN ĐỔI
+   4. NGÔN NGỮ TỰ ĐỘNG
 ========================================== */
 function detectLanguage() {
-    const languages = navigator.languages || [navigator.language || "vi"];
+    const languages = navigator.languages ||
+                      [navigator.language || "vi"];
 
     for (const language of languages) {
         const code = language.toLowerCase();
-
         if (code.startsWith("vi")) return "vi";
         if (code.startsWith("en")) return "en";
         if (code.startsWith("th")) return "th";
@@ -964,12 +971,21 @@ function detectLanguage() {
     return "vi";
 }
 
-let currentLanguage = detectLanguage();
+function getInitialLanguage() {
+    try {
+        const saved = localStorage.getItem("taoGamingLanguage");
+        if (saved && TRANSLATIONS[saved]) return saved;
+    } catch (_) {}
+
+    return detectLanguage();
+}
+
+let currentLanguage = getInitialLanguage();
 
 function t(key) {
-    return TRANSLATIONS[currentLanguage][key]
-        ?? TRANSLATIONS.vi[key]
-        ?? key;
+    return TRANSLATIONS[currentLanguage]?.[key] ??
+           TRANSLATIONS.vi[key] ??
+           key;
 }
 
 function applyLanguage(language) {
@@ -979,17 +995,25 @@ function applyLanguage(language) {
     document.documentElement.lang = language;
     $("languageSelect").value = language;
 
+    try {
+        localStorage.setItem("taoGamingLanguage", language);
+    } catch (_) {}
+
     document.querySelectorAll("[data-i18n]").forEach(element => {
         const key = element.dataset.i18n;
-        if (TRANSLATIONS[language][key] !== undefined) {
-            element.innerHTML = TRANSLATIONS[language][key];
+        const translated = TRANSLATIONS[language][key];
+
+        if (translated !== undefined) {
+            element.innerHTML = translated;
         }
     });
 
     document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
         const key = element.dataset.i18nPlaceholder;
-        if (TRANSLATIONS[language][key] !== undefined) {
-            element.placeholder = TRANSLATIONS[language][key];
+        const translated = TRANSLATIONS[language][key];
+
+        if (translated !== undefined) {
+            element.placeholder = translated;
         }
     });
 
@@ -1012,7 +1036,7 @@ $("languageSelect").addEventListener("change", event => {
 });
 
 /* ==========================================
-   5. HIỂN THỊ BẢNG THẺ NẠP
+   5. BẢNG THẺ NẠP
 ========================================== */
 function renderCards() {
     $("cardTable").innerHTML = CARDS.map(card => `
@@ -1024,10 +1048,14 @@ function renderCards() {
 }
 
 /* ==========================================
-   6. ĐỌC DỮ LIỆU KC
+   6. ĐỌC VÀ KIỂM TRA DỮ LIỆU
 ========================================== */
 function parseCurrentKC(value) {
-    const cleaned = String(value).trim().replace(/[.,\s]/g, "");
+    /*
+      Chỉ loại bỏ dấu cách. Không tự xóa dấu chấm/phẩy để tránh
+      nhập nhầm số, ví dụ "5,5" thành "55".
+    */
+    const cleaned = String(value).trim().replace(/\s/g, "");
 
     if (cleaned === "") return 0;
 
@@ -1051,29 +1079,30 @@ function parseTargetKC(value) {
         throw new Error(t("enterTarget"));
     }
 
-    const parts = text.split(/[+,/;\s]+/).filter(Boolean);
+    /* Chấp nhận +, /, ;, dấu phẩy và khoảng trắng. */
+    const parts = text.split(/[+,/;，、,\s]+/).filter(Boolean);
 
     if (parts.length === 0) {
         throw new Error(t("invalidTarget"));
     }
 
     const numbers = parts.map(part => {
-        const normalized = part.replace(/\./g, "");
+        const normalized = part.replace(/[._]/g, "");
 
         if (!/^\d+$/.test(normalized)) {
             throw new Error(t("invalidGem") + part);
         }
 
-        const n = Number(normalized);
+        const number = Number(normalized);
 
-        if (!Number.isSafeInteger(n)) {
+        if (!Number.isSafeInteger(number)) {
             throw new Error(t("gemTooLarge"));
         }
 
-        return n;
+        return number;
     });
 
-    const total = numbers.reduce((sum, n) => sum + n, 0);
+    const total = numbers.reduce((sum, number) => sum + number, 0);
 
     if (!Number.isSafeInteger(total)) {
         throw new Error(t("totalTooLarge"));
@@ -1083,7 +1112,7 @@ function parseTargetKC(value) {
 }
 
 /* ==========================================
-   7. THUẬT TOÁN TÌM PHƯƠNG ÁN NẠP
+   7. TÌM PHƯƠNG ÁN NẠP
 ========================================== */
 function findBestPlan(target) {
     if (target === 0) {
@@ -1149,56 +1178,56 @@ function findBestPlan(target) {
     }
 
     const reward = counts.reduce(
-        (sum, count, i) => sum + count * CARDS[i].kc, 0
+        (sum, count, index) => sum + count * CARDS[index].kc, 0
     );
 
     const money = counts.reduce(
-        (sum, count, i) => sum + count * CARDS[i].money, 0
+        (sum, count, index) => sum + count * CARDS[index].money, 0
     );
 
     return { money, reward, counts };
 }
 
 /* ==========================================
-   8. NỘI DUNG SAO CHÉP ĐA NGÔN NGỮ
+   8. NỘI DUNG SAO CHÉP
 ========================================== */
 function buildCopyText(reward, money, surplus) {
     const headings = {
         vi: {
             title: "CÔNG CỤ TÍNH KC - TÁO GAMING VN",
-            reward: "KC nhận được",
+            reward: "KC nhận được từ thẻ nạp",
             money: "Tổng tiền nạp",
-            surplus: "Số dư kim cương"
+            surplus: "Số dư KC sau khi sử dụng"
         },
         en: {
             title: "DIAMOND CALCULATOR - TAO GAMING VN",
-            reward: "Diamonds received",
+            reward: "Diamonds from top-up",
             money: "Total top-up cost",
-            surplus: "Remaining diamonds"
+            surplus: "Diamonds remaining after use"
         },
         th: {
             title: "เครื่องคำนวณเพชร - TAO GAMING VN",
-            reward: "เพชรที่ได้รับ",
+            reward: "เพชรที่ได้รับจากการเติม",
             money: "ยอดเติมทั้งหมด",
-            surplus: "เพชรคงเหลือ"
+            surplus: "เพชรคงเหลือหลังใช้งาน"
         },
         zh: {
             title: "钻石计算器 - TAO GAMING VN",
-            reward: "获得钻石",
+            reward: "充值获得的钻石",
             money: "充值总金额",
-            surplus: "剩余钻石"
+            surplus: "使用后的剩余钻石"
         },
         id: {
             title: "KALKULATOR DIAMOND - TAO GAMING VN",
-            reward: "Diamond diterima",
+            reward: "Diamond dari top up",
             money: "Total biaya top up",
-            surplus: "Sisa diamond"
+            surplus: "Sisa diamond setelah digunakan"
         },
         hi: {
             title: "डायमंड कैलकुलेटर - TAO GAMING VN",
-            reward: "प्राप्त डायमंड",
+            reward: "टॉप-अप से मिले डायमंड",
             money: "कुल टॉप-अप लागत",
-            surplus: "शेष डायमंड"
+            surplus: "उपयोग के बाद शेष डायमंड"
         }
     };
 
@@ -1206,14 +1235,14 @@ function buildCopyText(reward, money, surplus) {
 
     return [
         "----- " + labels.title + " -----",
-        "•  " + labels.reward + ": " + formatNumber(reward) + " 💎",
-        "•  " + labels.money + ": " + formatMoney(money),
-        "•  " + labels.surplus + ": " + formatNumber(surplus) + " 💎"
+        "• " + labels.reward + ": " + formatNumber(reward) + " 💎",
+        "• " + labels.money + ": " + formatMoney(money),
+        "• " + labels.surplus + ": " + formatNumber(surplus) + " 💎"
     ].join("\n");
 }
 
 /* ==========================================
-   9. TÍNH TOÁN VÀ CẬP NHẬT KẾT QUẢ
+   9. TÍNH TOÁN KC
 ========================================== */
 function calculateKC() {
     $("inputStatus").textContent = "";
@@ -1224,10 +1253,22 @@ function calculateKC() {
     try {
         const parsed = parseTargetKC($("targetKC").value);
         const current = parseCurrentKC($("currentKC").value);
-        const missing = Math.max(0, parsed.total - current);
 
+        /*
+          KC cần nạp = KC cần sử dụng - KC đang có.
+          Nếu KC hiện có đã đủ thì không cần nạp thêm.
+        */
+        const missing = Math.max(0, parsed.total - current);
         const plan = findBestPlan(missing);
-        const surplus = current + plan.reward - parsed.total;
+
+        /*
+          Số dư sau khi sử dụng =
+          KC hiện có + KC nhận từ thẻ nạp - KC cần sử dụng.
+        */
+        const surplus = Math.max(
+            0,
+            current + plan.reward - parsed.total
+        );
 
         $("rewardResult").textContent = formatKC(plan.reward);
         $("moneyResult").textContent = formatMoney(plan.money);
@@ -1236,7 +1277,10 @@ function calculateKC() {
         lastPlan = {
             reward: plan.reward,
             money: plan.money,
-            surplus
+            surplus,
+            current,
+            target: parsed.total,
+            missing
         };
 
         lastCopyText = buildCopyText(
@@ -1310,23 +1354,21 @@ async function copyResult() {
             const success = document.execCommand("copy");
             textarea.remove();
 
-            if (!success) {
-                throw new Error("copy-failed");
-            }
+            if (!success) throw new Error("copy-failed");
         }
 
         $("copyStatus").textContent = t("copied");
         $("copyBtn").innerHTML =
             "<span>✓</span><span>" + t("copiedButton") + "</span>";
         $("copyStatus").classList.remove("error");
-    } catch (error) {
+    } catch (_) {
         $("copyStatus").textContent = t("copyFailed");
         $("copyStatus").classList.add("error");
     }
 }
 
 /* ==========================================
-   11. TỰ ĐỘNG TÍNH LẠI KHI NHẬP DỮ LIỆU
+   11. TỰ ĐỘNG TÍNH LẠI KHI NHẬP
 ========================================== */
 function handleInputChange() {
     resetCopyButton();
@@ -1342,16 +1384,126 @@ $("calculateBtn").addEventListener("click", calculateKC);
 $("copyBtn").addEventListener("click", copyResult);
 
 /* ==========================================
-   12. KHỞI TẠO
+   12. BỘ ĐẾM ONLINE REALTIME QUA FIREBASE
+========================================== */
+
+/*
+  CẦN THIẾT LẬP ĐỂ ĐẾM CHUNG NHIỀU NGƯỜI TRUY CẬP:
+
+  1. Tạo Firebase project tại https://console.firebase.google.com/
+  2. Tạo Realtime Database.
+  3. Lấy cấu hình Web App rồi điền các giá trị bên dưới.
+  4. Thiết lập quy tắc bảo mật Realtime Database phù hợp.
+  5. Đưa website lên HTTPS.
+
+  Nếu chưa cấu hình, website hiển thị "(-- ONLINE)" thay vì
+  bịa ra một số người online.
+
+  Đây là bộ đếm phiên truy cập đang hoạt động. Mạng bị ngắt,
+  trình duyệt bị treo hoặc thiết bị ngủ có thể khiến số liệu
+  cập nhật trễ; không có bộ đếm trình duyệt nào bảo đảm chính
+  xác tuyệt đối trong mọi tình huống.
+*/
+
+const Firebase = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+    projectId: "YOUR_PROJECT_ID",
+    appId: "YOUR_APP_ID"
+};
+
+function isFirebaseConfigured() {
+    return FIREBASE_CONFIG.apiKey !== "YOUR_API_KEY" &&
+           FIREBASE_CONFIG.projectId !== "YOUR_PROJECT_ID" &&
+           FIREBASE_CONFIG.appId !== "YOUR_APP_ID" &&
+           FIREBASE_CONFIG.databaseURL.includes("firebaseio.com");
+}
+
+function setOnlineText(text) {
+    $("onlineText").textContent = text;
+}
+
+function initOnlineCounter() {
+    if (!isFirebaseConfigured()) {
+        setOnlineText("(-- ONLINE)");
+        return;
+    }
+
+    if (typeof firebase === "undefined") {
+        setOnlineText("(ONLINE N/A)");
+        return;
+    }
+
+    try {
+        if (!firebase.apps.length) {
+            firebase.initializeApp(FIREBASE_CONFIG);
+        }
+
+        const database = firebase.database();
+        const sessionsRef = database.ref("sitePresence/sessions");
+
+        const sessionId =
+            (window.crypto && crypto.randomUUID)
+                ? crypto.randomUUID()
+                : "session_" + Date.now() + "_" +
+                  Math.random().toString(36).slice(2);
+
+        const mySessionRef = sessionsRef.child(sessionId);
+
+        /*
+          Firebase sẽ xóa phiên này khi phát hiện client mất kết nối.
+          Đây là cơ chế presence phổ biến, không phải bảo đảm tuyệt đối.
+        */
+        const connectedRef = database.ref(".info/connected");
+
+        connectedRef.on("value", snapshot => {
+            if (snapshot.val() !== true) {
+                return;
+            }
+
+            mySessionRef.onDisconnect().remove()
+                .then(() => mySessionRef.set({
+                    connectedAt: firebase.database.ServerValue.TIMESTAMP,
+                    deviceType: DEVICE_INFO.type,
+                    deviceOS: DEVICE_INFO.os
+                }))
+                .catch(() => {
+                    setOnlineText("(ONLINE N/A)");
+                });
+        });
+
+        sessionsRef.on("value", snapshot => {
+            const count = snapshot.numChildren();
+            setOnlineText("(" + count + " ONLINE)");
+        }, () => {
+            setOnlineText("(ONLINE N/A)");
+        });
+
+        /*
+          Khi tab chuyển về nền hoặc được mở lại, kết nối sẽ được
+          Firebase quản lý. Không ghi thông tin cá nhân vào presence.
+        */
+        window.addEventListener("pagehide", () => {
+            mySessionRef.remove().catch(() => {});
+        });
+    } catch (_) {
+        setOnlineText("(ONLINE N/A)");
+    }
+}
+
+/* ==========================================
+   13. KHỞI TẠO WEBSITE
 ========================================== */
 applyLanguage(currentLanguage);
 renderCards();
+initOnlineCounter();
 
 /*
- * DEVICE_INFO có thể dùng cho giao diện responsive hoặc
- * phân tích nội bộ trong tương lai. Không hiển thị thiết bị
- * và không gửi thông tin thiết bị tới bất kỳ máy chủ nào.
- */
+  DEVICE_INFO nhận diện loại thiết bị trong trình duyệt.
+  Trình duyệt thường không cung cấp đời iPhone chính xác,
+  vì vậy không tự khẳng định iPhone thuộc thế hệ nào.
+*/
 </script>
 </body>
-  </html>
+</html></html>
