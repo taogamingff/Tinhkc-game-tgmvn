@@ -1,885 +1,108 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#10121b">
-  <meta name="description" content="Táo Gaming VN - Công cụ tính KC Free Fire và tham khảo các gói KC.">
-  <title>Táo Gaming VN - Tính KC Free Fire</title>
-
-  <style>
-    :root {
-      --bg: #0c0e16;
-      --panel: #151824;
-      --panel2: #1c2030;
-      --text: #f5f6ff;
-      --muted: #a6adc3;
-      --primary: #ffb800;
-      --green: #39df91;
-      --border: rgba(255,255,255,.09);
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      color: var(--text);
-      background:
-        radial-gradient(ellipse at top, #25213b 0%, transparent 48%),
-        var(--bg);
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      min-height: 100vh;
-    }
-
-    button, input, select { font: inherit; }
-    button { cursor: pointer; }
-
-    .container {
-      width: min(920px, 100%);
-      margin: auto;
-      padding: 18px 14px 36px;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      margin-bottom: 22px;
-    }
-
-    .logo {
-      width: 64px;
-      height: 64px;
-      border-radius: 17px;
-      object-fit: cover;
-      border: 2px solid rgba(255,184,0,.65);
-      background: var(--panel);
-    }
-
-    .brand { flex: 1; min-width: 0; }
-    .brand h1 {
-      margin: 0;
-      font-size: clamp(19px, 5vw, 27px);
-      line-height: 1.25;
-    }
-
-    .brand p {
-      margin: 5px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .language {
-      max-width: 125px;
-      padding: 9px 7px;
-      border-radius: 10px;
-      color: white;
-      background: var(--panel2);
-      border: 1px solid var(--border);
-    }
-
-    .online-pill {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      width: fit-content;
-      margin: 0 auto 22px;
-      padding: 9px 16px;
-      background: rgba(57,223,145,.09);
-      border: 1px solid rgba(57,223,145,.25);
-      border-radius: 999px;
-      color: var(--green);
-      font-size: 14px;
-      font-weight: 750;
-    }
-
-    .online-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 10px rgba(57,223,145,.7);
-    }
-
-    .hero {
-      text-align: center;
-      padding: 25px 16px;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      background: linear-gradient(140deg, #20243a, #151824);
-      margin-bottom: 18px;
-    }
-
-    .hero h2 {
-      margin: 0 0 9px;
-      color: var(--primary);
-      font-size: clamp(22px, 6vw, 32px);
-    }
-
-    .hero p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: 14px;
-    }
-
-    .section {
-      padding: 19px;
-      margin: 16px 0;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: rgba(21,24,36,.96);
-    }
-
-    .section h2 {
-      margin: 0 0 17px;
-      font-size: 19px;
-    }
-
-    .field { margin: 13px 0; }
-
-    label {
-      display: block;
-      margin-bottom: 7px;
-      color: #dce0ef;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    input {
-      width: 100%;
-      min-height: 46px;
-      padding: 12px;
-      color: white;
-      background: #0d101a;
-      border: 1px solid #34394c;
-      border-radius: 11px;
-      outline: none;
-    }
-
-    input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(255,184,0,.12);
-    }
-
-    .btn {
-      width: 100%;
-      min-height: 46px;
-      padding: 12px 16px;
-      border: 0;
-      border-radius: 11px;
-      font-weight: 800;
-      transition: filter .15s ease;
-    }
-
-    .btn:active { filter: brightness(.88); }
-
-    .btn-primary {
-      color: #191300;
-      background: linear-gradient(90deg, #ffce36, #ff9e00);
-    }
-
-    .btn-secondary {
-      margin-top: 10px;
-      color: white;
-      background: #292e42;
-      border: 1px solid var(--border);
-    }
-
-    .result {
-      display: none;
-      margin-top: 16px;
-      padding: 15px;
-      border-radius: 12px;
-      border: 1px solid rgba(57,223,145,.25);
-      background: rgba(57,223,145,.07);
-      line-height: 1.8;
-      overflow-wrap: anywhere;
-    }
-
-    .result strong { color: var(--green); }
-
-    .packages {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 11px;
-    }
-
-    .package {
-      padding: 15px 10px;
-      text-align: center;
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      background: var(--panel2);
-    }
-
-    .package .kc {
-      color: var(--primary);
-      font-size: 21px;
-      font-weight: 850;
-    }
-
-    .package .price {
-      margin: 5px 0 0;
-      color: #e2e5f2;
-      font-size: 14px;
-    }
-
-    .package .note {
-      margin-top: 7px;
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .small-note {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.6;
-      margin: 13px 0 0;
-    }
-
-    footer {
-      padding: 20px 8px 0;
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.8;
-    }
-
-    @media (min-width: 580px) {
-      .container { padding-top: 28px; }
-      .packages { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .section { padding: 24px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090b10">
+<meta name="description" content="Công cụ tính kim cương Free Fire - Táo Gaming VN">
+<title>Tính KC - Táo Gaming VN</title>
+<style>
+@font-face{font-family:GFF;src:url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff2") format("woff2"),url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff") format("woff");font-weight:700;font-display:swap}
+:root{--bg:#090b10;--panel:#12151c;--gold:#ffc94a;--white:#f8f9fc;--muted:#919bad;--line:#2a303c;--green:#54f0a1;--blue:#70d9ff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;color:var(--white);background:radial-gradient(ellipse at 50% -15%,#57401940,transparent 50%),var(--bg);font-family:GFF,Arial,sans-serif;font-weight:700}
+button,input,textarea,select,table{font-family:GFF,Arial,sans-serif;font-weight:700}button{touch-action:manipulation}
+.app{width:100%;max-width:520px;margin:auto;padding:24px 16px 28px}
+.online-indicator{position:fixed;top:12px;left:12px;z-index:1000;display:flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid #54f0a150;border-radius:20px;color:var(--green);background:#101b17ee;box-shadow:0 4px 18px #0005;font-size:10px}
+.online-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px #54f0a1}
+.header{text-align:center;padding:12px 0 20px}.logo{width:76px;height:76px;margin:0 auto 15px;display:flex;align-items:center;justify-content:center;border-radius:22px;border:1px solid #ffcc6260;background:linear-gradient(145deg,#39270e,#17130d);box-shadow:0 0 35px #ffad2620;overflow:hidden}.logo img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
+.language-wrap{display:flex;justify-content:center;align-items:center;gap:9px;margin:0 auto 22px}.language-label{color:var(--muted);font-size:11px}.language-select{max-width:205px;padding:10px 12px;color:var(--gold);background:#12151c;border:1px solid #45402f;border-radius:10px;outline:none;font-size:12px}
+.eyebrow{color:var(--gold);font-size:11px;letter-spacing:3px;margin-bottom:9px}h1{margin:0;font-size:clamp(25px,7vw,34px);line-height:1.3;letter-spacing:-.6px}h1 span{color:var(--gold)}.subtitle{margin:10px 0 0;font-size:11px;line-height:1.8;color:var(--muted)}
+.panel{padding:19px;margin-bottom:15px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,#171b24,#101319);box-shadow:0 12px 30px #00000016}
+.section-heading{display:flex;align-items:center;gap:10px;margin:0 0 18px;font-size:14px;letter-spacing:.2px}.section-icon{width:34px;height:34px;flex-shrink:0;display:grid;place-items:center;border-radius:10px;color:var(--gold);background:#ffc94a13;border:1px solid #ffc94a24;font-size:17px}
+.field{margin-bottom:17px}label{display:block;color:#dce0e9;font-size:11px;margin-bottom:9px}input,textarea{display:block;width:100%;outline:none;color:var(--white);background:#0b0e14;border:1px solid #303745;border-radius:11px;padding:14px;font-size:14px;transition:border-color .2s,box-shadow .2s;user-select:text}textarea{resize:vertical;min-height:83px;line-height:1.8}input:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px #ffc94a12}input::placeholder,textarea::placeholder{color:#626c7e}
+.hint,.section-note{color:#7f899b;font-size:10px;line-height:1.8;margin-top:8px}.btn{width:100%;min-height:49px;border:0;border-radius:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;padding:12px;font-size:13px;letter-spacing:.2px;transition:transform .15s,filter .15s}.btn:active{transform:scale(.985)}.btn-primary{color:#171109;background:linear-gradient(105deg,#ffe18b,#ffc13d 52%,#ff9d21);box-shadow:0 5px 20px #ffb82d20}.btn-copy{color:var(--gold);background:#ffc94a0b;border:1px solid #ffc94a60}.calculate-btn{margin-top:5px}
+.section-note{margin:-8px 0 15px}.table-wrap{overflow:hidden;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;font-size:11px;text-align:left}thead{background:#242017;color:var(--gold)}th,td{padding:13px 11px;border-bottom:1px solid #252a34}th:last-child,td:last-child{text-align:right}tbody tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#ffffff03}.gem-value{color:var(--blue);white-space:nowrap}.money-value{white-space:nowrap}
+.result{display:none}.result.show{display:block;animation:appear .3s ease-out}@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.result-top{padding:15px;border-radius:12px;border:1px solid #54f0a130;background:linear-gradient(135deg,#163329,#101c1a);margin-bottom:12px}.result-top-label{color:#a5cdb8;font-size:10px;margin-bottom:9px}.result-top-value{color:var(--green);font-size:clamp(25px,7vw,34px);overflow-wrap:anywhere}
+.result-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 13px;margin-bottom:9px;border:1px solid var(--line);border-radius:11px;background:#0d1016}.result-row-label{color:#a8b1c1;font-size:11px;line-height:1.7}.result-row-value{text-align:right;font-size:15px;overflow-wrap:anywhere}.gold{color:var(--gold)}.blue{color:var(--blue)}.green{color:var(--green)}
+.copy-preview{margin-top:14px;padding:14px;border-radius:11px;border:1px solid #303745;background:#090c11}.copy-preview-title{font-size:10px;color:var(--muted);margin-bottom:11px}.copy-preview pre{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:#e5e9f0;font:700 11px/2 GFF,Arial,sans-serif}.copy-btn{margin-top:13px}.status{min-height:16px;text-align:center;color:var(--green);font-size:10px;line-height:1.7;margin-top:10px}.error{color:#ff7b7b}
+.footer{padding:17px 8px 5px;text-align:center;border-top:1px solid #242832;margin-top:22px}.copyright{color:var(--gold);font-size:12px;letter-spacing:.5px}.tiktok{margin-top:8px;color:#a4adbd;font-size:11px}.footer-note{margin-top:13px;color:#5f6879;font-size:9px;line-height:1.8}
+@media(max-width:360px){.app{padding:16px 11px 24px}.panel{padding:14px}th,td{padding:11px 8px}.result-row-value{font-size:13px}.language-select{max-width:175px}.online-indicator{top:7px;left:7px}}
+</style>
 </head>
-
 <body>
-  <main class="container">
-    <header>
-      <img
-        class="logo"
-        src="https://azerst-image-vn.vercel.app/images/3BsAxPLJV.jpg"
-        alt="Logo Táo Gaming VN"
-        onerror="this.style.display='none'"
-      >
-
-      <div class="brand">
-        <h1>Táo Gaming VN</h1>
-        <p id="subtitle">Công cụ tính KC Free Fire</p>
-      </div>
-
-      <select class="language" id="language" aria-label="Language">
-        <option value="vi">🇻🇳 Tiếng Việt</option>
-        <option value="en">🇬🇧 English</option>
-        <option value="th">🇹🇭 ภาษาไทย</option>
-        <option value="zh">🇨🇳 中文</option>
-        <option value="id">🇮🇩 Indonesia</option>
-        <option value="hi">🇮🇳 हिन्दी</option>
-      </select>
-    </header>
-
-    <div class="online-pill" aria-live="polite">
-      <span class="online-dot"></span>
-      <span id="onlineText">Đang kết nối...</span>
-    </div>
-
-    <section class="hero">
-      <h2 id="heroTitle">TÍNH KC FREE FIRE</h2>
-      <p id="heroDesc">
-        Tính số KC cần nạp nhanh chóng, đơn giản và dễ sử dụng.
-      </p>
-    </section>
-
-    <section class="section">
-      <h2 id="calcTitle">🧮 Máy tính KC</h2>
-
-      <div class="field">
-        <label id="currentLabel" for="currentKC">KC hiện có</label>
-        <input
-          id="currentKC"
-          type="number"
-          min="0"
-          max="1000000"
-          step="1"
-          inputmode="numeric"
-          placeholder="Ví dụ: 120"
-        >
-      </div>
-
-      <div class="field">
-        <label id="targetLabel" for="targetKC">Tổng KC mong muốn</label>
-        <input
-          id="targetKC"
-          type="number"
-          min="1"
-          max="1000000"
-          step="1"
-          inputmode="numeric"
-          placeholder="Ví dụ: 1000"
-        >
-      </div>
-
-      <button class="btn btn-primary" id="calculateBtn">
-        Tính gói KC cần nạp
-      </button>
-
-      <div class="result" id="result" aria-live="polite"></div>
-
-      <button class="btn btn-secondary" id="copyBtn" style="display:none">
-        📋 Sao chép kết quả
-      </button>
-    </section>
-
-    <section class="section">
-      <h2 id="priceTitle">💎 Bảng giá KC tham khảo</h2>
-      <div class="packages" id="packages"></div>
-      <p class="small-note" id="priceNote">
-        Giá và số KC hiển thị là thông tin tham khảo theo cấu hình của website.
-        Hãy kiểm tra thông tin chính thức trước khi thanh toán.
-      </p>
-    </section>
-
-    <footer>
-      <div>© <span id="year"></span> Táo Gaming VN</div>
-      <div id="footerText">Công cụ tính KC dành cho người chơi Free Fire.</div>
-      <div id="connectionNote"></div>
-    </footer>
-  </main>
-
-  <!-- Firebase SDK tương thích dạng script -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
-  <script>
-    "use strict";
-
-    // Cấu hình Firebase của dự án online-54304.
-    // Nếu apiKey trong Firebase Console khác, hãy thay bằng giá trị chính xác.
-    const FIREBASE_CONFIG = {
-      apiKey: "AIzaSyBbDjvJ22cTcDT0UhHprTUV9Hbfe2aCW0J",
-      authDomain: "online-54304.firebaseapp.com",
-      databaseURL:
-        "https://online-54304-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "online-54304",
-      storageBucket: "online-54304.firebasestorage.app",
-      messagingSenderId: "480852659082",
-      appId: "1:480852659082:web:7c76718c1d143aefe95673",
-      measurementId: "G-9HL1926D4V"
-    };
-
-    // Các gói KC theo bảng giá đã thiết lập.
-    const PACKAGES = [
-      { money: 5000, kc: 25 },
-      { money: 10000, kc: 51 },
-      { money: 20000, kc: 113 },
-      { money: 50000, kc: 283 },
-      { money: 100000, kc: 566 },
-      { money: 200000, kc: 1132 },
-      { money: 500000, kc: 2830 }
-    ];
-
-    const TEXT = {
-      vi: {
-        subtitle: "Công cụ tính KC Free Fire",
-        heroTitle: "TÍNH KC FREE FIRE",
-        heroDesc: "Tính số KC cần nạp nhanh chóng, đơn giản và dễ sử dụng.",
-        calcTitle: "🧮 Máy tính KC",
-        currentLabel: "KC hiện có",
-        targetLabel: "Tổng KC mong muốn",
-        currentPlaceholder: "Ví dụ: 120",
-        targetPlaceholder: "Ví dụ: 1000",
-        calculate: "Tính gói KC cần nạp",
-        priceTitle: "💎 Bảng giá KC tham khảo",
-        priceNote: "Giá và số KC hiển thị là thông tin tham khảo theo cấu hình của website. Hãy kiểm tra thông tin chính thức trước khi thanh toán.",
-        footerText: "Công cụ tính KC dành cho người chơi Free Fire.",
-        connecting: "Đang kết nối...",
-        online: n => `${n} ONLINE`,
-        offline: "Không kết nối được bộ đếm",
-        invalid: "Vui lòng nhập số KC hợp lệ (từ 0 đến 1.000.000).",
-        already: "Bạn đã có đủ KC mục tiêu!",
-        current: "KC hiện có",
-        target: "KC mục tiêu",
-        need: "KC cần nạp thêm",
-        buy: "Gói KC nên nạp",
-        totalKC: "Tổng KC từ các gói",
-        extra: "KC còn dư sau khi đạt mục tiêu",
-        cost: "Tổng chi phí tham khảo",
-        noPlan: "Không tìm được phương án. Hãy giảm số KC mục tiêu.",
-        copy: "📋 Sao chép kết quả",
-        copied: "Đã sao chép!",
-        copyFail: "Không thể sao chép tự động. Hãy sao chép kết quả thủ công.",
-        package: "Gói nạp",
-        connectionNote: "Số online có thể thay đổi tùy kết nối và phiên truy cập."
-      },
-      en: {
-        subtitle: "Free Fire Diamond Calculator",
-        heroTitle: "FREE FIRE DIAMOND CALCULATOR",
-        heroDesc: "Quickly calculate the diamonds you need.",
-        calcTitle: "🧮 Diamond calculator",
-        currentLabel: "Current diamonds",
-        targetLabel: "Desired total diamonds",
-        currentPlaceholder: "Example: 120",
-        targetPlaceholder: "Example: 1000",
-        calculate: "Calculate top-up",
-        priceTitle: "💎 Reference top-up packages",
-        priceNote: "Prices and diamond amounts are reference information configured for this website. Verify official details before payment.",
-        footerText: "Diamond calculator for Free Fire players.",
-        connecting: "Connecting...",
-        online: n => `${n} ONLINE`,
-        offline: "Online counter unavailable",
-        invalid: "Enter a valid diamond amount (0 to 1,000,000).",
-        already: "You already have enough diamonds!",
-        current: "Current diamonds",
-        target: "Target diamonds",
-        need: "Additional diamonds needed",
-        buy: "Suggested packages",
-        totalKC: "Diamonds from packages",
-        extra: "Extra diamonds after reaching target",
-        cost: "Estimated total cost",
-        noPlan: "No plan found. Try a smaller target.",
-        copy: "📋 Copy result",
-        copied: "Copied!",
-        copyFail: "Automatic copy failed. Please copy manually.",
-        package: "Package",
-        connectionNote: "Online count may vary with connections and sessions."
-      },
-      th: {
-        subtitle: "เครื่องคำนวณเพชร Free Fire",
-        heroTitle: "คำนวณเพชร FREE FIRE",
-        heroDesc: "คำนวณจำนวนเพชรที่ต้องเติมได้อย่างรวดเร็ว",
-        calcTitle: "🧮 เครื่องคำนวณเพชร",
-        currentLabel: "เพชรที่มีอยู่",
-        targetLabel: "จำนวนเพชรเป้าหมาย",
-        currentPlaceholder: "ตัวอย่าง: 120",
-        targetPlaceholder: "ตัวอย่าง: 1000",
-        calculate: "คำนวณแพ็กเกจ",
-        priceTitle: "💎 ราคาแพ็กเกจอ้างอิง",
-        priceNote: "ราคาและจำนวนเพชรเป็นข้อมูลอ้างอิง โปรดตรวจสอบข้อมูลอย่างเป็นทางการก่อนชำระเงิน",
-        footerText: "เครื่องคำนวณเพชรสำหรับผู้เล่น Free Fire",
-        connecting: "กำลังเชื่อมต่อ...",
-        online: n => `${n} ONLINE`,
-        offline: "ไม่สามารถเชื่อมต่อตัวนับออนไลน์",
-        invalid: "กรุณากรอกจำนวนเพชรตั้งแต่ 0 ถึง 1,000,000",
-        already: "คุณมีเพชรเพียงพอแล้ว!",
-        current: "เพชรที่มีอยู่",
-        target: "เพชรเป้าหมาย",
-        need: "เพชรที่ต้องเติม",
-        buy: "แพ็กเกจที่แนะนำ",
-        totalKC: "เพชรจากแพ็กเกจ",
-        extra: "เพชรส่วนเกิน",
-        cost: "ราคารวมโดยประมาณ",
-        noPlan: "ไม่พบแพ็กเกจที่เหมาะสม กรุณาลดจำนวนเป้าหมาย",
-        copy: "📋 คัดลอกผลลัพธ์",
-        copied: "คัดลอกแล้ว!",
-        copyFail: "คัดลอกอัตโนมัติไม่สำเร็จ กรุณาคัดลอกด้วยตนเอง",
-        package: "แพ็กเกจ",
-        connectionNote: "จำนวนออนไลน์ขึ้นอยู่กับการเชื่อมต่อ"
-      },
-      zh: {
-        subtitle: "Free Fire 钻石计算器",
-        heroTitle: "FREE FIRE 钻石计算",
-        heroDesc: "快速计算还需要充值多少钻石。",
-        calcTitle: "🧮 钻石计算器",
-        currentLabel: "当前钻石",
-        targetLabel: "目标钻石总数",
-        currentPlaceholder: "例如：120",
-        targetPlaceholder: "例如：1000",
-        calculate: "计算充值方案",
-        priceTitle: "💎 参考充值套餐",
-        priceNote: "价格和钻石数量仅供参考，付款前请核实官方信息。",
-        footerText: "为 Free Fire 玩家提供钻石计算工具。",
-        connecting: "正在连接...",
-        online: n => `${n} 人在线`,
-        offline: "在线计数器暂不可用",
-        invalid: "请输入 0 至 1,000,000 之间的有效数量。",
-        already: "你的钻石已经足够！",
-        current: "当前钻石",
-        target: "目标钻石",
-        need: "还需充值",
-        buy: "建议套餐",
-        totalKC: "套餐钻石总数",
-        extra: "达成目标后的剩余钻石",
-        cost: "参考总费用",
-        noPlan: "找不到方案，请减少目标数量。",
-        copy: "📋 复制结果",
-        copied: "已复制！",
-        copyFail: "无法自动复制，请手动复制。",
-        package: "套餐",
-        connectionNote: "在线人数可能随连接状态变化。"
-      },
-      id: {
-        subtitle: "Kalkulator Diamond Free Fire",
-        heroTitle: "KALKULATOR DIAMOND",
-        heroDesc: "Hitung kebutuhan diamond dengan cepat.",
-        calcTitle: "🧮 Kalkulator diamond",
-        currentLabel: "Diamond saat ini",
-        targetLabel: "Total diamond yang diinginkan",
-        currentPlaceholder: "Contoh: 120",
-        targetPlaceholder: "Contoh: 1000",
-        calculate: "Hitung top-up",
-        priceTitle: "💎 Paket top-up referensi",
-        priceNote: "Harga dan jumlah diamond hanya referensi. Periksa informasi resmi sebelum membayar.",
-        footerText: "Kalkulator diamond untuk pemain Free Fire.",
-        connecting: "Menghubungkan...",
-        online: n => `${n} ONLINE`,
-        offline: "Penghitung online tidak tersedia",
-        invalid: "Masukkan jumlah 0 sampai 1.000.000 yang valid.",
-        already: "Diamond kamu sudah cukup!",
-        current: "Diamond saat ini",
-        target: "Target diamond",
-        need: "Diamond tambahan",
-        buy: "Paket yang disarankan",
-        totalKC: "Diamond dari paket",
-        extra: "Diamond tersisa",
-        cost: "Total biaya perkiraan",
-        noPlan: "Paket tidak ditemukan. Kurangi target.",
-        copy: "📋 Salin hasil",
-        copied: "Berhasil disalin!",
-        copyFail: "Gagal menyalin otomatis. Silakan salin manual.",
-        package: "Paket",
-        connectionNote: "Jumlah online dapat berubah sesuai koneksi."
-      },
-      hi: {
-        subtitle: "Free Fire डायमंड कैलकुलेटर",
-        heroTitle: "FREE FIRE डायमंड कैलकुलेटर",
-        heroDesc: "ज़रूरी डायमंड की गणना जल्दी करें।",
-        calcTitle: "🧮 डायमंड कैलकुलेटर",
-        currentLabel: "मौजूदा डायमंड",
-        targetLabel: "लक्ष्य डायमंड",
-        currentPlaceholder: "उदाहरण: 120",
-        targetPlaceholder: "उदाहरण: 1000",
-        calculate: "टॉप-अप की गणना करें",
-        priceTitle: "💎 संदर्भ टॉप-अप पैकेज",
-        priceNote: "कीमत और डायमंड की संख्या संदर्भ के लिए हैं। भुगतान से पहले आधिकारिक जानकारी जाँचें।",
-        footerText: "Free Fire खिलाड़ियों के लिए डायमंड कैलकुलेटर।",
-        connecting: "कनेक्ट हो रहा है...",
-        online: n => `${n} ONLINE`,
-        offline: "ऑनलाइन काउंटर उपलब्ध नहीं",
-        invalid: "0 से 1,000,000 के बीच सही संख्या दर्ज करें।",
-        already: "आपके पास पर्याप्त डायमंड हैं!",
-        current: "मौजूदा डायमंड",
-        target: "लक्ष्य डायमंड",
-        need: "अतिरिक्त डायमंड",
-        buy: "सुझाए गए पैकेज",
-        totalKC: "पैकेज से कुल डायमंड",
-        extra: "बचे हुए डायमंड",
-        cost: "अनुमानित कुल लागत",
-        noPlan: "कोई योजना नहीं मिली। लक्ष्य कम करें।",
-        copy: "📋 परिणाम कॉपी करें",
-        copied: "कॉपी हो गया!",
-        copyFail: "स्वचालित कॉपी विफल। कृपया मैन्युअल कॉपी करें।",
-        package: "पैकेज",
-        connectionNote: "ऑनलाइन संख्या कनेक्शन के अनुसार बदल सकती है।"
-      }
-    };
-
-    const $ = id => document.getElementById(id);
-    let currentLanguage = "vi";
-    let latestResultText = "";
-
-    function money(value) {
-      return new Intl.NumberFormat(
-        currentLanguage === "vi" ? "vi-VN" : "en-US"
-      ).format(value) + "đ";
-    }
-
-    function number(value) {
-      return new Intl.NumberFormat(
-        currentLanguage === "vi" ? "vi-VN" : "en-US"
-      ).format(value);
-    }
-
-    function renderPackages() {
-      $("packages").replaceChildren();
-
-      PACKAGES.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "package";
-
-        const kc = document.createElement("div");
-        kc.className = "kc";
-        kc.textContent = `${number(item.kc)} KC`;
-
-        const price = document.createElement("div");
-        price.className = "price";
-        price.textContent = money(item.money);
-
-        const note = document.createElement("div");
-        note.className = "note";
-        note.textContent = TEXT[currentLanguage].package;
-
-        card.append(kc, price, note);
-        $("packages").appendChild(card);
-      });
-    }
-
-    function setLanguage(language) {
-      currentLanguage = TEXT[language] ? language : "vi";
-      const t = TEXT[currentLanguage];
-
-      document.documentElement.lang = currentLanguage;
-      $("subtitle").textContent = t.subtitle;
-      $("heroTitle").textContent = t.heroTitle;
-      $("heroDesc").textContent = t.heroDesc;
-      $("calcTitle").textContent = t.calcTitle;
-      $("currentLabel").textContent = t.currentLabel;
-      $("targetLabel").textContent = t.targetLabel;
-      $("currentKC").placeholder = t.currentPlaceholder;
-      $("targetKC").placeholder = t.targetPlaceholder;
-      $("calculateBtn").textContent = t.calculate;
-      $("priceTitle").textContent = t.priceTitle;
-      $("priceNote").textContent = t.priceNote;
-      $("footerText").textContent = t.footerText;
-      $("connectionNote").textContent = t.connectionNote;
-      $("copyBtn").textContent = t.copy;
-
-      renderPackages();
-      updateOnlineText();
-    }
-
-    // Tìm tổ hợp gói có tổng KC đủ dùng với tổng chi phí thấp nhất.
-    // Tìm đến mục tiêu + gói lớn nhất để tính phần KC dư.
-    function findBestPlan(neededKC) {
-      if (neededKC <= 0) {
-        return { cost: 0, kc: 0, counts: [] };
-      }
-
-      const maxPackageKC = Math.max(...PACKAGES.map(p => p.kc));
-      const limit = neededKC + maxPackageKC;
-      const dp = new Array(limit + 1).fill(Infinity);
-      const prev = new Array(limit + 1).fill(null);
-      dp[0] = 0;
-
-      for (let amount = 1; amount <= limit; amount++) {
-        for (let i = 0; i < PACKAGES.length; i++) {
-          const pack = PACKAGES[i];
-          const before = amount - pack.kc;
-
-          if (before >= 0 && dp[before] !== Infinity) {
-            const newCost = dp[before] + pack.money;
-            if (newCost < dp[amount]) {
-              dp[amount] = newCost;
-              prev[amount] = { before, index: i };
-            }
-          }
-        }
-      }
-
-      let bestAmount = -1;
-      let bestCost = Infinity;
-
-      for (let amount = neededKC; amount <= limit; amount++) {
-        if (dp[amount] < bestCost) {
-          bestCost = dp[amount];
-          bestAmount = amount;
-        }
-      }
-
-      if (bestAmount < 0 || !Number.isFinite(bestCost)) return null;
-
-      const counts = new Array(PACKAGES.length).fill(0);
-      let cursor = bestAmount;
-
-      while (cursor > 0) {
-        const step = prev[cursor];
-        if (!step) return null;
-        counts[step.index]++;
-        cursor = step.before;
-      }
-
-      return { cost: bestCost, kc: bestAmount, counts };
-    }
-
-    function showResult(html, plainText) {
-      $("result").style.display = "block";
-      $("result").innerHTML = html;
-      $("copyBtn").style.display = "block";
-      latestResultText = plainText;
-    }
-
-    function calculate() {
-      const t = TEXT[currentLanguage];
-      const current = Number($("currentKC").value);
-      const target = Number($("targetKC").value);
-
-      if (
-        $("currentKC").value.trim() === "" ||
-        $("targetKC").value.trim() === "" ||
-        !Number.isSafeInteger(current) ||
-        !Number.isSafeInteger(target) ||
-        current < 0 ||
-        target < 1 ||
-        current > 1000000 ||
-        target > 1000000
-      ) {
-        showResult(
-          `<strong>${t.invalid}</strong>`,
-          t.invalid
-        );
-        return;
-      }
-
-      if (current >= target) {
-        const message = `${t.already}\n${t.current}: ${number(current)} KC\n${t.target}: ${number(target)} KC`;
-        showResult(
-          `<strong>${t.already}</strong><br>${t.current}: ${number(current)} KC<br>${t.target}: ${number(target)} KC`,
-          message
-        );
-        return;
-      }
-
-      const needed = target - current;
-      const plan = findBestPlan(needed);
-
-      if (!plan) {
-        showResult(`<strong>${t.noPlan}</strong>`, t.noPlan);
-        return;
-      }
-
-      const packageLines = [];
-      const packageHtml = [];
-
-      plan.counts.forEach((count, index) => {
-        if (count > 0) {
-          const p = PACKAGES[index];
-          const line = `${count} × ${number(p.kc)} KC (${money(p.money)} ${currentLanguage === "vi" ? "/ gói" : "per package"})`;
-          packageLines.push(line);
-          packageHtml.push(`${count} × ${number(p.kc)} KC — ${money(p.money)}`);
-        }
-      });
-
-      const extra = plan.kc - needed;
-      const html = `
-        ${t.current}: <strong>${number(current)} KC</strong><br>
-        ${t.target}: <strong>${number(target)} KC</strong><br>
-        ${t.need}: <strong>${number(needed)} KC</strong><br>
-        ${t.buy}:<br><strong>${packageHtml.join("<br>")}</strong><br>
-        ${t.totalKC}: <strong>${number(plan.kc)} KC</strong><br>
-        ${t.extra}: <strong>${number(extra)} KC</strong><br>
-        ${t.cost}: <strong>${money(plan.cost)}</strong>
-      `;
-
-      const plain = [
-        "Táo Gaming VN",
-        `${t.current}: ${number(current)} KC`,
-        `${t.target}: ${number(target)} KC`,
-        `${t.need}: ${number(needed)} KC`,
-        t.buy + ":",
-        ...packageLines,
-        `${t.totalKC}: ${number(plan.kc)} KC`,
-        `${t.extra}: ${number(extra)} KC`,
-        `${t.cost}: ${money(plan.cost)}`
-      ].join("\n");
-
-      showResult(html, plain);
-    }
-
-    async function copyResult() {
-      if (!latestResultText) return;
-      const t = TEXT[currentLanguage];
-
-      try {
-        await navigator.clipboard.writeText(latestResultText);
-        $("copyBtn").textContent = t.copied;
-        setTimeout(() => {
-          $("copyBtn").textContent = TEXT[currentLanguage].copy;
-        }, 1600);
-      } catch (error) {
-        const area = document.createElement("textarea");
-        area.value = latestResultText;
-        area.style.position = "fixed";
-        area.style.opacity = "0";
-        document.body.appendChild(area);
-        area.select();
-
-        let copied = false;
-        try { copied = document.execCommand("copy"); } catch (_) {}
-
-        area.remove();
-        alert(copied ? t.copied : t.copyFail);
-      }
-    }
-
-    $("calculateBtn").addEventListener("click", calculate);
-    $("copyBtn").addEventListener("click", copyResult);
-    $("language").addEventListener("change", event => {
-      setLanguage(event.target.value);
-    });
-
-    $("year").textContent = new Date().getFullYear();
-    setLanguage("vi");
-
-    // Firebase: đếm phiên đang hoạt động tại sitePresence/sessions.
-    const ONLINE_PATH = "sitePresence/sessions";
-    let onlineCount = null;
-    let firebaseReady = false;
-
-    function updateOnlineText() {
-      const t = TEXT[currentLanguage];
-
-      if (!firebaseReady) {
-        $("onlineText").textContent = t.connecting;
-      } else if (onlineCount === null) {
-        $("onlineText").textContent = t.connecting;
-      } else {
-        $("onlineText").textContent = t.online(onlineCount);
-      }
-    }
-
-    function startOnlineCounter() {
-      if (!window.firebase) {
-        $("onlineText").textContent = TEXT[currentLanguage].offline;
-        return;
-      }
-
-      try {
-        if (!firebase.apps.length) {
-          firebase.initializeApp(FIREBASE_CONFIG);
-        }
-
-        const db = firebase.database();
-        const sessionsRef = db.ref(ONLINE_PATH);
-        const sessionRef = sessionsRef.push();
-
-        // Đăng ký xóa phiên khi kết nối bị ngắt TRƯỚC khi ghi phiên.
-        sessionRef.onDisconnect().remove()
-          .then(() => sessionRef.set({
-            connected: true,
-            lastSeen: firebase.database.ServerValue.TIMESTAMP
-          }))
-          .then(() => {
-            firebaseReady = true;
-            updateOnlineText();
-          })
-          .catch(error => {
-            console.error("Firebase presence error:", error);
-            $("onlineText").textContent = TEXT[currentLanguage].offline;
-          });
-
-        sessionsRef.on("value", snapshot => {
-          const sessions = snapshot.val();
-          onlineCount = sessions ? Object.keys(sessions).length : 0;
-          firebaseReady = true;
-          updateOnlineText();
-        }, error => {
-          console.error("Firebase read error:", error);
-          $("onlineText").textContent = TEXT[currentLanguage].offline;
-        });
-
-        // Dọn phiên khi đóng trang bình thường.
-        window.addEventListener("pagehide", () => {
-          sessionRef.remove().catch(() => {});
-        });
-      } catch (error) {
-        console.error("Firebase initialization error:", error);
-        $("onlineText").textContent = TEXT[currentLanguage].offline;
-      }
-    }
-
-    startOnlineCounter();
-  </script>
+<div class="online-indicator" aria-live="polite"><span class="online-dot"></span><span id="onlineText">(-- ONLINE)</span></div>
+<main class="app">
+<header class="header">
+<div class="logo"><img src="https://azerst-image-vn.vercel.app/images/3BsAxPLJV.jpg" alt="Táo Gaming VN" onerror="this.style.display='none';this.parentElement.textContent='💎';"></div>
+<div class="language-wrap"><label class="language-label" for="languageSelect" data-i18n="languageLabel">🌐 Ngôn ngữ</label><select id="languageSelect" class="language-select" aria-label="Select language"><option value="vi">🇻🇳 Tiếng Việt</option><option value="en">🇬🇧 English</option><option value="th">🇹🇭 ภาษาไทย</option><option value="zh">🇨🇳 中文</option><option value="id">🇮🇩 Bahasa Indonesia</option><option value="hi">🇮🇳 हिन्दी</option></select></div>
+<div class="eyebrow">FREE FIRE TOOL</div><h1><span data-i18n="titleFirst">TÍNH KC</span> <span data-i18n="titleLast">GAME</span></h1><p class="subtitle"><span data-i18n="subtitle">CÔNG CỤ TÍNH KIM CƯƠNG TỰ ĐỘNG</span><br>TÁO GAMING VN 🔥</p>
+</header>
+<section class="panel">
+<h2 class="section-heading"><span class="section-icon">✦</span><span data-i18n="inputHeading">NHẬP THÔNG TIN</span></h2>
+<div class="field"><label for="targetKC" data-i18n="targetLabel">DANH SÁCH KC CẦN TÍNH</label><textarea id="targetKC" placeholder="VD: 4/19/49/99/199/299/399/599" data-i18n-placeholder="targetPlaceholder" spellcheck="false" autocomplete="off">4/19/49/99/199/299/399/599</textarea><div class="hint" data-i18n="targetHint">Nhập KC cách nhau bằng +, / hoặc dấu phẩy. Ví dụ: 4/19/49/99/199/299/399/599</div></div>
+<div class="field"><label for="currentKC" data-i18n="currentLabel">KC HIỆN CÓ TRONG GAME</label><input id="currentKC" type="text" inputmode="numeric" placeholder="Nhập KC hiện có, VD: 500" data-i18n-placeholder="currentPlaceholder" value="0" autocomplete="off"></div>
+<button class="btn btn-primary calculate-btn" id="calculateBtn"><span>⚡</span><span data-i18n="calculateButton">TÍNH KC NGAY</span></button><div id="inputStatus" class="status" aria-live="polite"></div>
+</section>
+<section class="panel"><h2 class="section-heading"><span class="section-icon">💳</span><span data-i18n="tableHeading">BẢNG QUY ĐỔI THẺ NẠP</span></h2><p class="section-note" data-i18n="tableNote">BẢNG GIÁ KC ĐƯỢC SỬ DỤNG ĐỂ TÍNH TOÁN</p><div class="table-wrap"><table><thead><tr><th data-i18n="moneyHeader">MỆNH GIÁ</th><th data-i18n="gemHeader">KIM CƯƠNG</th></tr></thead><tbody id="cardTable"></tbody></table></div></section>
+<section class="panel result" id="resultPanel"><h2 class="section-heading"><span class="section-icon">🏆</span><span data-i18n="resultHeading">KẾT QUẢ TÍNH KC</span></h2>
+<div class="result-top"><div class="result-top-label" data-i18n="rewardLabel">💎 KC NHẬN ĐƯỢC TỪ THẺ NẠP</div><div class="result-top-value" id="rewardResult">0 💎</div></div>
+<div class="result-row"><div class="result-row-label" data-i18n="moneyLabel">💰 TỔNG TIỀN NẠP</div><div class="result-row-value gold" id="moneyResult">0 ₫</div></div>
+<div class="result-row"><div class="result-row-label" data-i18n="surplusLabel">💎 SỐ DƯ KIM CƯƠNG</div><div class="result-row-value green" id="surplusResult">0 💎</div></div>
+<div class="copy-preview"><div class="copy-preview-title" data-i18n="copyPreviewTitle">NỘI DUNG SAO CHÉP</div><pre id="copyPreview"></pre></div>
+<button class="btn btn-copy copy-btn" id="copyBtn"><span>📋</span><span data-i18n="copyButton">SAO CHÉP KẾT QUẢ</span></button><div class="status" id="copyStatus" aria-live="polite"></div>
+</section>
+<footer class="footer"><div class="copyright">© TÁO GAMING VN 🔥</div><div class="tiktok">TikTok: @taogamingffvn</div><div class="footer-note" data-i18n="footerNote">CÔNG CỤ HỖ TRỢ TÍNH TOÁN KC<br>KHÔNG LIÊN KẾT HOẶC XÁC NHẬN GIAO DỊCH VỚI GAME</div></footer>
+</main>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+"use strict";
+const CARDS=[{money:5000,kc:25},{money:10000,kc:51},{money:20000,kc:113},{money:50000,kc:283},{money:100000,kc:566},{money:200000,kc:1132},{money:500000,kc:2830}];
+const $=id=>document.getElementById(id),formatNumber=n=>Math.round(n).toLocaleString("en-US"),formatMoney=n=>formatNumber(n)+" ₫",formatKC=n=>formatNumber(n)+" 💎";
+let lastCopyText="",hasCalculated=false;
+function detectDevice(){const ua=navigator.userAgent||"",platform=navigator.userAgentData?.platform||navigator.platform||"";const ipad=/iPad/i.test(ua)||(platform==="MacIntel"&&navigator.maxTouchPoints>1),iphone=/iPhone|iPod/i.test(ua),android=/Android/i.test(ua),mobile=/Mobi|Mobile/i.test(ua);let type="desktop",os="unknown";if(ipad){type="tablet";os="iPadOS"}else if(iphone){type="mobile";os="iOS"}else if(android){type=mobile?"mobile":"tablet";os="Android"}else if(/Windows/i.test(platform+" "+ua))os="Windows";else if(/Mac/i.test(platform+" "+ua))os="macOS";else if(/Linux/i.test(platform+" "+ua))os="Linux";return{type,os}}
+const DEVICE_INFO=detectDevice();
+const TRANSLATIONS={
+vi:{languageLabel:"🌐 Ngôn ngữ",titleFirst:"TÍNH KC",titleLast:"GAME",subtitle:"CÔNG CỤ TÍNH KIM CƯƠNG TỰ ĐỘNG",inputHeading:"NHẬP THÔNG TIN",targetLabel:"DANH SÁCH KC CẦN TÍNH",targetPlaceholder:"VD: 4/19/49/99/199/299/399/599",targetHint:"Nhập KC cách nhau bằng +, / hoặc dấu phẩy. Ví dụ: 4/19/49/99/199/299/399/599",currentLabel:"KC HIỆN CÓ TRONG GAME",currentPlaceholder:"Nhập KC hiện có, VD: 500",calculateButton:"TÍNH KC NGAY",tableHeading:"BẢNG QUY ĐỔI THẺ NẠP",tableNote:"BẢNG GIÁ KC ĐƯỢC SỬ DỤNG ĐỂ TÍNH TOÁN",moneyHeader:"MỆNH GIÁ",gemHeader:"KIM CƯƠNG",resultHeading:"KẾT QUẢ TÍNH KC",rewardLabel:"💎 KC NHẬN ĐƯỢC TỪ THẺ NẠP",moneyLabel:"💰 TỔNG TIỀN NẠP",surplusLabel:"💎 SỐ DƯ KIM CƯƠNG",copyPreviewTitle:"NỘI DUNG SAO CHÉP",copyButton:"SAO CHÉP KẾT QUẢ",copiedButton:"ĐÃ SAO CHÉP KẾT QUẢ",footerNote:"CÔNG CỤ HỖ TRỢ TÍNH TOÁN KC<br>KHÔNG LIÊN KẾT HOẶC XÁC NHẬN GIAO DỊCH VỚI GAME",success:"✓ TÍNH KC THÀNH CÔNG",copied:"✓ ĐÃ SAO CHÉP KẾT QUẢ!",noResult:"Vui lòng tính KC trước.",copyFailed:"Không thể tự động sao chép. Hãy thử lại.",invalidCurrent:"KC hiện có phải là số nguyên không âm.",currentTooLarge:"Số KC hiện có vượt giới hạn.",enterTarget:"Vui lòng nhập danh sách KC cần tính.",invalidTarget:"Danh sách KC không hợp lệ.",invalidGem:"KC không hợp lệ: ",gemTooLarge:"Một giá trị KC vượt giới hạn.",totalTooLarge:"Tổng KC vượt giới hạn.",targetTooLarge:"KC còn thiếu quá lớn để tính trực tiếp. Vui lòng kiểm tra lại dữ liệu.",noPlan:"Không tìm được phương án nạp phù hợp.",calculationFailed:"Không thể hoàn tất phép tính.",planFailed:"Không thể xác định phương án nạp.",genericError:"Đã xảy ra lỗi. Vui lòng kiểm tra dữ liệu."},
+en:{languageLabel:"🌐 Language",titleFirst:"DIAMOND",titleLast:"CALCULATOR",subtitle:"AUTOMATIC FREE FIRE DIAMOND CALCULATOR",inputHeading:"ENTER DETAILS",targetLabel:"DIAMONDS NEEDED",targetPlaceholder:"e.g. 4/19/49/99/199/299/399/599",targetHint:"Separate values with +, / or commas.",currentLabel:"CURRENT DIAMONDS",currentPlaceholder:"Enter current diamonds, e.g. 500",calculateButton:"CALCULATE NOW",tableHeading:"TOP-UP PRICE TABLE",tableNote:"DIAMOND VALUES USED FOR CALCULATION",moneyHeader:"PRICE",gemHeader:"DIAMONDS",resultHeading:"CALCULATION RESULTS",rewardLabel:"💎 DIAMONDS FROM TOP-UP",moneyLabel:"💰 TOTAL TOP-UP COST",surplusLabel:"💎 REMAINING DIAMONDS",copyPreviewTitle:"COPY CONTENT",copyButton:"COPY RESULTS",copiedButton:"RESULTS COPIED",footerNote:"DIAMOND CALCULATION TOOL<br>NOT AFFILIATED WITH OR ENDORSED BY THE GAME",success:"✓ CALCULATION SUCCESSFUL",copied:"✓ RESULTS COPIED!",noResult:"Please calculate first.",copyFailed:"Automatic copying failed. Please try again.",invalidCurrent:"Current diamonds must be a non-negative integer.",currentTooLarge:"Current diamond count exceeds the limit.",enterTarget:"Please enter the required diamond list.",invalidTarget:"Invalid diamond list.",invalidGem:"Invalid diamond value: ",gemTooLarge:"A diamond value exceeds the limit.",totalTooLarge:"Total diamonds exceed the limit.",targetTooLarge:"The missing diamond amount is too large to calculate directly.",noPlan:"No suitable top-up plan found.",calculationFailed:"Unable to complete the calculation.",planFailed:"Unable to determine the top-up plan.",genericError:"An error occurred. Please check your input."},
+th:{languageLabel:"🌐 ภาษา",titleFirst:"คำนวณเพชร",titleLast:"เกม",subtitle:"เครื่องมือคำนวณเพชร FREE FIRE อัตโนมัติ",inputHeading:"กรอกข้อมูล",targetLabel:"รายการเพชรที่ต้องการ",targetPlaceholder:"เช่น 4/19/49/99/199/299/399/599",targetHint:"คั่นตัวเลขด้วย +, / หรือจุลภาค",currentLabel:"เพชรที่มีอยู่ในเกม",currentPlaceholder:"กรอกจำนวนเพชร เช่น 500",calculateButton:"คำนวณเพชร",tableHeading:"ตารางราคาเติมเงิน",tableNote:"ราคาเพชรที่ใช้ในการคำนวณ",moneyHeader:"ราคา",gemHeader:"เพชร",resultHeading:"ผลการคำนวณ",rewardLabel:"💎 เพชรที่ได้รับจากการเติม",moneyLabel:"💰 ยอดเติมทั้งหมด",surplusLabel:"💎 เพชรคงเหลือ",copyPreviewTitle:"ข้อความที่จะคัดลอก",copyButton:"คัดลอกผลลัพธ์",copiedButton:"คัดลอกแล้ว",footerNote:"เครื่องมือคำนวณเพชร<br>ไม่มีส่วนเกี่ยวข้องกับเกม",success:"✓ คำนวณสำเร็จ",copied:"✓ คัดลอกผลลัพธ์แล้ว!",noResult:"กรุณาคำนวณก่อน",copyFailed:"ไม่สามารถคัดลอกอัตโนมัติได้ กรุณาลองอีกครั้ง",invalidCurrent:"จำนวนเพชรต้องเป็นจำนวนเต็มที่ไม่ติดลบ",currentTooLarge:"จำนวนเพชรเกินขีดจำกัด",enterTarget:"กรุณากรอกรายการเพชรที่ต้องการ",invalidTarget:"รายการเพชรไม่ถูกต้อง",invalidGem:"จำนวนเพชรไม่ถูกต้อง: ",gemTooLarge:"จำนวนเพชรเกินขีดจำกัด",totalTooLarge:"จำนวนเพชรรวมเกินขีดจำกัด",targetTooLarge:"จำนวนเพชรที่ขาดมากเกินไปสำหรับการคำนวณ",noPlan:"ไม่พบแผนเติมเงินที่เหมาะสม",calculationFailed:"ไม่สามารถคำนวณให้เสร็จได้",planFailed:"ไม่สามารถระบุแผนเติมเงินได้",genericError:"เกิดข้อผิดพลาด กรุณาตรวจสอบข้อมูล"},
+zh:{languageLabel:"🌐 语言",titleFirst:"钻石",titleLast:"计算器",subtitle:"FREE FIRE 钻石自动计算工具",inputHeading:"输入信息",targetLabel:"所需钻石列表",targetPlaceholder:"例如：4/19/49/99/199/299/399/599",targetHint:"使用 +、/ 或逗号分隔数字。",currentLabel:"游戏中现有钻石",currentPlaceholder:"输入现有钻石，例如 500",calculateButton:"立即计算",tableHeading:"充值价格表",tableNote:"计算所使用的钻石价格",moneyHeader:"价格",gemHeader:"钻石",resultHeading:"计算结果",rewardLabel:"💎 充值获得的钻石",moneyLabel:"💰 充值总金额",surplusLabel:"💎 剩余钻石",copyPreviewTitle:"复制内容",copyButton:"复制结果",copiedButton:"已复制结果",footerNote:"钻石计算工具<br>与游戏无关联，也不代表游戏官方",success:"✓ 计算成功",copied:"✓ 结果已复制！",noResult:"请先计算钻石。",copyFailed:"无法自动复制，请重试。",invalidCurrent:"现有钻石必须是非负整数。",currentTooLarge:"现有钻石数量超出限制。",enterTarget:"请输入所需钻石列表。",invalidTarget:"钻石列表无效。",invalidGem:"无效的钻石数值：",gemTooLarge:"钻石数值超出限制。",totalTooLarge:"钻石总数超出限制。",targetTooLarge:"缺少的钻石数量过大，无法直接计算。",noPlan:"找不到合适的充值方案。",calculationFailed:"无法完成计算。",planFailed:"无法确定充值方案。",genericError:"发生错误，请检查输入。"},
+id:{languageLabel:"🌐 Bahasa",titleFirst:"HITUNG",titleLast:"DIAMOND",subtitle:"ALAT HITUNG DIAMOND FREE FIRE OTOMATIS",inputHeading:"MASUKKAN DATA",targetLabel:"DAFTAR DIAMOND YANG DIBUTUHKAN",targetPlaceholder:"Contoh: 4/19/49/99/199/299/399/599",targetHint:"Pisahkan angka dengan +, / atau koma.",currentLabel:"DIAMOND SAAT INI",currentPlaceholder:"Masukkan diamond saat ini, mis. 500",calculateButton:"HITUNG SEKARANG",tableHeading:"TABEL HARGA TOP UP",tableNote:"HARGA DIAMOND UNTUK PERHITUNGAN",moneyHeader:"HARGA",gemHeader:"DIAMOND",resultHeading:"HASIL PERHITUNGAN",rewardLabel:"💎 DIAMOND DARI TOP UP",moneyLabel:"💰 TOTAL BIAYA TOP UP",surplusLabel:"💎 SISA DIAMOND",copyPreviewTitle:"KONTEN YANG DISALIN",copyButton:"SALIN HASIL",copiedButton:"HASIL TERSALIN",footerNote:"ALAT BANTU PERHITUNGAN DIAMOND<br>TIDAK BERAFILIASI DENGAN GAME",success:"✓ PERHITUNGAN BERHASIL",copied:"✓ HASIL BERHASIL DISALIN!",noResult:"Silakan hitung terlebih dahulu.",copyFailed:"Penyalinan otomatis gagal. Silakan coba lagi.",invalidCurrent:"Diamond saat ini harus berupa bilangan bulat nonnegatif.",currentTooLarge:"Jumlah diamond saat ini melebihi batas.",enterTarget:"Masukkan daftar diamond yang dibutuhkan.",invalidTarget:"Daftar diamond tidak valid.",invalidGem:"Jumlah diamond tidak valid: ",gemTooLarge:"Nilai diamond melebihi batas.",totalTooLarge:"Total diamond melebihi batas.",targetTooLarge:"Jumlah diamond yang kurang terlalu besar untuk dihitung langsung.",noPlan:"Tidak ditemukan paket top up yang sesuai.",calculationFailed:"Perhitungan tidak dapat diselesaikan.",planFailed:"Paket top up tidak dapat ditentukan.",genericError:"Terjadi kesalahan. Periksa kembali data."},
+hi:{languageLabel:"🌐 भाषा",titleFirst:"डायमंड",titleLast:"कैलकुलेटर",subtitle:"FREE FIRE डायमंड की स्वचालित गणना",inputHeading:"जानकारी दर्ज करें",targetLabel:"आवश्यक डायमंड की सूची",targetPlaceholder:"उदाहरण: 4/19/49/99/199/299/399/599",targetHint:"+, / या कॉमा से संख्याओं को अलग करें।",currentLabel:"गेम में मौजूदा डायमंड",currentPlaceholder:"मौजूदा डायमंड दर्ज करें, जैसे 500",calculateButton:"अभी गणना करें",tableHeading:"टॉप-अप मूल्य तालिका",tableNote:"गणना के लिए उपयोग किए गए डायमंड मूल्य",moneyHeader:"कीमत",gemHeader:"डायमंड",resultHeading:"गणना का परिणाम",rewardLabel:"💎 टॉप-अप से मिलने वाले डायमंड",moneyLabel:"💰 कुल टॉप-अप लागत",surplusLabel:"💎 शेष डायमंड",copyPreviewTitle:"कॉपी की जाने वाली सामग्री",copyButton:"परिणाम कॉपी करें",copiedButton:"परिणाम कॉपी हो गया",footerNote:"डायमंड गणना उपकरण<br>गेम से संबद्ध नहीं है",success:"✓ गणना सफल",copied:"✓ परिणाम कॉपी हो गया!",noResult:"कृपया पहले गणना करें।",copyFailed:"स्वचालित कॉपी विफल हुई। फिर से प्रयास करें।",invalidCurrent:"मौजूदा डायमंड गैर-ऋणात्मक पूर्णांक होने चाहिए।",currentTooLarge:"मौजूदा डायमंड की संख्या सीमा से अधिक है।",enterTarget:"आवश्यक डायमंड की सूची दर्ज करें।",invalidTarget:"डायमंड सूची अमान्य है।",invalidGem:"अमान्य डायमंड मान: ",gemTooLarge:"डायमंड मान सीमा से अधिक है।",totalTooLarge:"कुल डायमंड सीमा से अधिक हैं।",targetTooLarge:"गुम डायमंड की संख्या सीधे गणना करने के लिए बहुत बड़ी है।",noPlan:"उपयुक्त टॉप-अप योजना नहीं मिली।",calculationFailed:"गणना पूरी नहीं हो सकी।",planFailed:"टॉप-अप योजना निर्धारित नहीं हो सकी।",genericError:"त्रुटि हुई। कृपया जानकारी जाँचें。"}
+};
+function detectLanguage(){for(const l of navigator.languages||[navigator.language||"vi"]){const c=l.toLowerCase();for(const code of ["vi","en","th","zh","id","hi"])if(c.startsWith(code))return code}return"vi"}
+function getInitialLanguage(){try{const s=localStorage.getItem("taoGamingLanguage");if(s&&TRANSLATIONS[s])return s}catch(_){}return detectLanguage()}
+let currentLanguage=getInitialLanguage();function t(k){return TRANSLATIONS[currentLanguage]?.[k]??TRANSLATIONS.vi[k]??k}
+function renderCards(){$("cardTable").innerHTML=CARDS.map(c=>`<tr><td class="money-value">${formatMoney(c.money)}</td><td class="gem-value">${formatNumber(c.kc)} 💎</td></tr>`).join("")}
+function resetCopyButton(clearStatus=true){$("copyBtn").innerHTML="<span>📋</span><span>"+t("copyButton")+"</span>";if(clearStatus){$("copyStatus").textContent="";$("copyStatus").classList.remove("error")}}
+function applyLanguage(lang){if(!TRANSLATIONS[lang])lang="vi";currentLanguage=lang;document.documentElement.lang=lang;$("languageSelect").value=lang;try{localStorage.setItem("taoGamingLanguage",lang)}catch(_){}document.querySelectorAll("[data-i18n]").forEach(el=>{const v=TRANSLATIONS[lang][el.dataset.i18n];if(v!==undefined)el.innerHTML=v});document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>{const v=TRANSLATIONS[lang][el.dataset.i18nPlaceholder];if(v!==undefined)el.placeholder=v});$("languageSelect").setAttribute("aria-label",t("languageLabel").replace("🌐 ",""));renderCards();if(hasCalculated)calculateKC();else resetCopyButton()}
+$("languageSelect").addEventListener("change",e=>applyLanguage(e.target.value));
+function parseCurrentKC(value){const s=String(value).trim().replace(/\s/g,"");if(s==="")return 0;if(!/^\d+$/.test(s))throw Error(t("invalidCurrent"));const n=Number(s);if(!Number.isSafeInteger(n))throw Error(t("currentTooLarge"));return n}
+function parseTargetKC(value){const text=String(value).trim();if(!text)throw Error(t("enterTarget"));const parts=text.split(/[+,/;，、,\s]+/).filter(Boolean);if(!parts.length)throw Error(t("invalidTarget"));const numbers=parts.map(p=>{const s=p.replace(/[._]/g,"");if(!/^\d+$/.test(s))throw Error(t("invalidGem")+p);const n=Number(s);if(!Number.isSafeInteger(n))throw Error(t("gemTooLarge"));return n});const total=numbers.reduce((a,n)=>a+n,0);if(!Number.isSafeInteger(total))throw Error(t("totalTooLarge"));return{numbers,total}}
+function findBestPlan(target){if(target===0)return{money:0,reward:0,counts:Array(CARDS.length).fill(0)};if(target>1000000)throw Error(t("targetTooLarge"));const INF=Number.MAX_SAFE_INTEGER,dp=new Float64Array(target+1),previous=new Int32Array(target+1),chosen=new Int16Array(target+1);dp.fill(INF);previous.fill(-1);chosen.fill(-1);dp[0]=0;for(let s=0;s<target;s++){if(dp[s]===INF)continue;for(let i=0;i<CARDS.length;i++){const next=Math.min(target,s+CARDS[i].kc),candidate=dp[s]+CARDS[i].money;if(candidate<dp[next]){dp[next]=candidate;previous[next]=s;chosen[next]=i}}}if(dp[target]===INF)throw Error(t("noPlan"));const counts=Array(CARDS.length).fill(0);let s=target,steps=0;while(s>0){if(++steps>target+1)throw Error(t("calculationFailed"));const i=chosen[s],p=previous[s];if(i<0||p<0||p>=s)throw Error(t("planFailed"));counts[i]++;s=p}const reward=counts.reduce((a,n,i)=>a+n*CARDS[i].kc,0),money=counts.reduce((a,n,i)=>a+n*CARDS[i].money,0);return{money,reward,counts}}
+function buildCopyText(reward,money,surplus){const labels={vi:["CÔNG CỤ TÍNH KC - TÁO GAMING VN","KC nhận được từ thẻ nạp","Tổng tiền nạp","Số dư KC sau khi sử dụng"],en:["DIAMOND CALCULATOR - TAO GAMING VN","Diamonds from top-up","Total top-up cost","Diamonds remaining after use"],th:["เครื่องคำนวณเพชร - TAO GAMING VN","เพชรที่ได้รับจากการเติม","ยอดเติมทั้งหมด","เพชรคงเหลือหลังใช้งาน"],zh:["钻石计算器 - TAO GAMING VN","充值获得的钻石","充值总金额","使用后的剩余钻石"],id:["KALKULATOR DIAMOND - TAO GAMING VN","Diamond dari top up","Total biaya top up","Sisa diamond setelah digunakan"],hi:["डायमंड कैलकुलेटर - TAO GAMING VN","टॉप-अप से मिले डायमंड","कुल टॉप-अप लागत","उपयोग के बाद शेष डायमंड"]}[currentLanguage]||["CÔNG CỤ TÍNH KC - TÁO GAMING VN","KC nhận được từ thẻ nạp","Tổng tiền nạp","Số dư KC sau khi sử dụng"];return["----- "+labels[0]+" -----","• "+labels[1]+": "+formatNumber(reward)+" 💎","• "+labels[2]+": "+formatMoney(money),"• "+labels[3]+": "+formatNumber(surplus)+" 💎"].join("\n")}
+function calculateKC(){$("inputStatus").textContent="";$("inputStatus").classList.remove("error");$("copyStatus").textContent="";$("copyStatus").classList.remove("error");try{const parsed=parseTargetKC($("targetKC").value),current=parseCurrentKC($("currentKC").value),missing=Math.max(0,parsed.total-current),plan=findBestPlan(missing),surplus=Math.max(0,current+plan.reward-parsed.total);$("rewardResult").textContent=formatKC(plan.reward);$("moneyResult").textContent=formatMoney(plan.money);$("surplusResult").textContent=formatKC(surplus);lastCopyText=buildCopyText(plan.reward,plan.money,surplus);$("copyPreview").textContent=lastCopyText;$("resultPanel").classList.add("show");hasCalculated=true;$("inputStatus").textContent=t("success");resetCopyButton(false)}catch(e){$("resultPanel").classList.remove("show");$("copyPreview").textContent="";lastCopyText="";hasCalculated=false;$("inputStatus").textContent="⚠ "+(e.message||t("genericError"));$("inputStatus").classList.add("error")}}
+async function copyResult(){$("copyStatus").textContent="";$("copyStatus").classList.remove("error");if(!lastCopyText||!hasCalculated){$("copyStatus").textContent=t("noResult");$("copyStatus").classList.add("error");return}try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(lastCopyText)}else{const ta=document.createElement("textarea");ta.value=lastCopyText;ta.setAttribute("readonly","");ta.style.position="fixed";ta.style.left="-9999px";document.body.appendChild(ta);ta.focus();ta.select();const ok=document.execCommand("copy");ta.remove();if(!ok)throw Error("copy-failed")}$("copyStatus").textContent=t("copied");$("copyBtn").innerHTML="<span>✓</span><span>"+t("copiedButton")+"</span>"}catch(_){$("copyStatus").textContent=t("copyFailed");$("copyStatus").classList.add("error")}}
+function handleInputChange(){resetCopyButton();if(hasCalculated)calculateKC()}
+$("targetKC").addEventListener("input",handleInputChange);$("currentKC").addEventListener("input",handleInputChange);$("calculateBtn").addEventListener("click",calculateKC);$("copyBtn").addEventListener("click",copyResult);
+
+/* Firebase presence: thay databaseURL bên trên bằng URL thật trong Firebase Console. */
+const FIREBASE_CONFIG = {
+    apiKey: "AIzaSyBbDjvJ22cTcDT0UhHprTUV9Hbfe2aCWJ0",
+    authDomain: "online-54304.firebaseapp.com",
+    databaseURL: "https://online-54304-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "online-54304",
+    storageBucket: "online-54304.firebasestorage.app",
+    messagingSenderId: "480852659082",
+    appId: "1:480852659082:web:7c76718c1d143aefe95673",
+    measurementId: "G-9HL1926D4V"
+};
+function isFirebaseConfigured(){return Boolean(FIREBASE_CONFIG.apiKey&&FIREBASE_CONFIG.apiKey!=="YOUR_API_KEY"&&FIREBASE_CONFIG.projectId==="online-54304"&&FIREBASE_CONFIG.appId!=="YOUR_APP_ID"&&/^https:\/\/[^/]+\.firebasedatabase\.app\/?$/.test(FIREBASE_CONFIG.databaseURL))}
+function setOnlineText(s){$("onlineText").textContent=s}
+function initOnlineCounter(){if(!isFirebaseConfigured()){setOnlineText("(-- ONLINE)");return}if(typeof firebase==="undefined"){setOnlineText("(ONLINE N/A)");return}try{if(!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG);const db=firebase.database(),sessions=db.ref("sitePresence/sessions"),connected=db.ref(".info/connected"),id=window.crypto&&crypto.randomUUID?crypto.randomUUID():"session_"+Date.now()+"_"+Math.random().toString(36).slice(2),mine=sessions.child(id);connected.on("value",snap=>{if(snap.val()!==true)return;mine.onDisconnect().remove().then(()=>mine.set({connectedAt:firebase.database.ServerValue.TIMESTAMP,deviceType:DEVICE_INFO.type,deviceOS:DEVICE_INFO.os})).catch(()=>setOnlineText("(ONLINE N/A)"))});sessions.on("value",snap=>setOnlineText("("+snap.numChildren()+" ONLINE)"),()=>setOnlineText("(ONLINE N/A)"))}catch(_){setOnlineText("(ONLINE N/A)")}}
+applyLanguage(currentLanguage);renderCards();initOnlineCounter();
+</script>
 </body>
 </html>
