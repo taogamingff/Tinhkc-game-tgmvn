@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090b10">
+<meta name="description" content="Công cụ tính kim cương Free Fire - Táo Gaming VN">
+<title>Tính KC - Táo Gaming VN</title>
+
+<style>
+@font-face {
+    font-family: "GFF-Latin-Bold";
+    src:
+        url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff2") format("woff2"),
+        url("https://dl.dir.freefiremobile.com/common/web_event/common/fonts/website/GFFLatinW05-Bold.woff") format("woff");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --bg: #090b10;
+    --panel: #12151c;
+    --panel2: #191e28;
+    --gold: #ffc94a;
+    --gold2: #ff9f1c;
+    --white: #f8f9fc;
+    --muted: #919bad;
+    --line: #2a303c;
+    --green: #54f0a1;
+    --blue: #70d9ff;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--white);
+    background:
+        radial-gradient(ellipse at 50% -15%, #57401940, transparent 50%),
+        var(--bg);
+    font-family: "GFF-Latin-Bold", Arial, sans-serif;
+    font-weight: 700;
+}
+
+button, input, textarea, table, select {
+    font-family: "GFF-Latin-Bold", Arial, sans-serif;
+    font-weight: 700;
+}
+
+button {
+    touch-action: manipulation;
+}
+
+.app {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 24px 16px 28px;
+}
+
+.header {
+    text-align: center;
+    padding: 12px 0 20px;
+}
+
+.logo {
+    width: 76px;
+    height: 76px;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 22px;
+    border: 1px solid #ffcc6260;
+    background: linear-gradient(145deg, #39270e, #17130d);
+    box-shadow: 0 0 35px #ffad2620;
+    overflow: hidden;
+}
+
+.logo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+}
+
+.language-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    margin: 0 auto 22px;
+}
+
+.language-label {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.language-select {
+    max-width: 205px;
+    padding: 10px 12px;
+    color: var(--gold);
+    background: #12151c;
+    border: 1px solid #45402f;
+    border-radius: 10px;
+    outline: none;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.language-select:focus {
+    border-color: var(--gold);
+}
+
+.eyebrow {
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 3px;
+    margin-bottom: 9px;
+}
+
+h1 {
+    margin: 0;
+    font-size: clamp(25px, 7vw, 34px);
+    line-height: 1.3;
+    letter-spacing: -.6px;
+}
+
+h1 span {
+    color: var(--gold);
+}
+
+.subtitle {
+    margin: 10px 0 0;
+    font-size: 11px;
+    line-height: 1.8;
+    color: var(--muted);
+}
+
+.panel {
+    padding: 19px;
+    margin-bottom: 15px;
+    border: 1px solid var(--line);
+    border-radius: 17px;
+    background: linear-gradient(145deg, #171b24, #101319);
+    box-shadow: 0 12px 30px #00000016;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 18px;
+    font-size: 14px;
+    letter-spacing: .2px;
+}
+
+.section-icon {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    color: var(--gold);
+    background: #ffc94a13;
+    border: 1px solid #ffc94a24;
+    font-size: 17px;
+}
+
+.field {
+    margin-bottom: 17px;
+}
+
+label {
+    display: block;
+    color: #dce0e9;
+    font-size: 11px;
+    margin-bottom: 9px;
+}
+
+input, textarea {
+    display: block;
+    width: 100%;
+    outline: none;
+    color: var(--white);
+    background: #0b0e14;
+    border: 1px solid #303745;
+    border-radius: 11px;
+    padding: 14px;
+    font-size: 14px;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 83px;
+    line-height: 1.8;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px #ffc94a12;
+}
+
+input::placeholder, textarea::placeholder {
+    color: #626c7e;
+}
+
+.hint {
+    color: #7f899b;
+    font-size: 10px;
+    line-height: 1.8;
+    margin-top: 8px;
+}
+
+.btn {
+    width: 100%;
+    min-height: 49px;
+    border: 0;
+    border-radius: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 12px;
+    font-size: 13px;
+    letter-spacing: .2px;
+    transition: transform .15s, filter .15s;
+}
+
+.btn:active {
+    transform: scale(.985);
+}
+
+.btn-primary {
+    color: #171109;
+    background: linear-gradient(105deg, #ffe18b, #ffc13d 52%, #ff9d21);
+    box-shadow: 0 5px 20px #ffb82d20;
+}
+
+.btn-copy {
+    color: var(--gold);
+    background: #ffc94a0b;
+    border: 1px solid #ffc94a60;
+}
+
+.calculate-btn {
+    margin-top: 5px;
+}
+
+.section-note {
+    margin: -8px 0 15px;
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.8;
+}
+
+.table-wrap {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    text-align: left;
+}
+
+thead {
+    background: #242017;
+    color: var(--gold);
+}
+
+th, td {
+    padding: 13px 11px;
+    border-bottom: 1px solid #252a34;
+}
+
+th:last-child, td:last-child {
+    text-align: right;
+}
+
+tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+tbody tr:nth-child(even) {
+    background: #ffffff03;
+}
+
+.gem-value {
+    color: var(--blue);
+    white-space: nowrap;
+}
+
+.money-value {
+    white-space: nowrap;
+}
+
+.result {
+    display: none;
+}
+
+.result.show {
+    display: block;
+    animation: appear .3s ease-out;
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.result-top {
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #54f0a130;
+    background: linear-gradient(135deg, #163329, #101c1a);
+    margin-bottom: 12px;
+}
+
+.result-top-label {
+    color: #a5cdb8;
+    font-size: 10px;
+    margin-bottom: 9px;
+}
+
+.result-top-value {
+    color: var(--green);
+    font-size: clamp(25px, 7vw, 34px);
+    overflow-wrap: anywhere;
+}
+
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 13px;
+    margin-bottom: 9px;
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    background: #0d1016;
+}
+
+.result-row-label {
+    color: #a8b1c1;
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.result-row-value {
+    text-align: right;
+    font-size: 15px;
+    overflow-wrap: anywhere;
+}
+
+.result-row-value.gold { color: var(--gold); }
+.result-row-value.blue { color: var(--blue); }
+.result-row-value.green { color: var(--green); }
+
+.copy-preview {
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 11px;
+    border: 1px solid #303745;
+    background: #090c11;
+}
+
+.copy-preview-title {
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 11px;
+}
+
+.copy-preview pre {
+    margin: 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    color: #e5e9f0;
+    font: 700 11px/2 "GFF-Latin-Bold", Arial, sans-serif;
+}
+
+.copy-btn {
+    margin-top: 13px;
+}
+
+.status {
+    min-height: 16px;
+    text-align: center;
+    color: var(--green);
+    font-size: 10px;
+    line-height: 1.7;
+    margin-top: 10px;
+}
+
+.error {
+    color: #ff7b7b;
+}
+
+.footer {
+    padding: 17px 8px 5px;
+    text-align: center;
+    border-top: 1px solid #242832;
+    margin-top: 22px;
+}
+
+.copyright {
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: .5px;
+}
+
+.tiktok {
+    margin-top: 8px;
+    color: #a4adbd;
+    font-size: 11px;
+}
+
+.footer-note {
+    margin-top: 13px;
+    color: #5f6879;
+    font-size: 9px;
+    line-height: 1.8;
+}
+
+@media (max-width: 360px) {
+    .app { padding: 16px 11px 24px; }
+    .panel { padding: 14px; }
+    th, td { padding: 11px 8px; }
+    .result-row-value { font-size: 13px; }
+    .language-select { max-width: 175px; }
+}
+
+input, textarea {
+    -webkit-user-select: text;
+    user-select: text;
+}
+</style>
+</head>
+
+<body>
+<main class="app">
+
+    <header class="header">
+        <div class="logo">
+            <img
+                src="https://azerst-image-vn.vercel.app/images/3BsAxPLJV.jpg"
+                alt="Táo Gaming VN"
+                onerror="this.style.display='none';this.parentElement.textContent='💎';"
+            >
+        </div>
+
+        <div class="language-wrap">
+            <label class="language-label" for="languageSelect"
+                   data-i18n="languageLabel">🌐 Ngôn ngữ</label>
+            <select id="languageSelect" class="language-select"
+                    aria-label="Select language">
+                <option value="vi">🇻🇳 Tiếng Việt</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="th">🇹🇭 ภาษาไทย</option>
+                <option value="zh">🇨🇳 中文</option>
+                <option value="id">🇮🇩 Bahasa Indonesia</option>
+                <option value="hi">🇮🇳 हिन्दी</option>
+            </select>
+        </div>
+
+        <div class="eyebrow">FREE FIRE TOOL</div>
+        <h1><span data-i18n="titleFirst">TÍNH KC</span>
+            <span data-i18n="titleLast">GAME</span></h1>
+        <p class="subtitle">
+            <span data-i18n="subtitle">CÔNG CỤ TÍNH KIM CƯƠNG TỰ ĐỘNG</span><br>
+            TÁO GAMING VN 🔥
+        </p>
+    </header>
+
+    <section class="panel">
+        <h2 class="section-heading">
+            <span class="section-icon">✦</span>
+            <span data-i18n="inputHeading">NHẬP THÔNG TIN</span>
+        </h2>
+
+        <div class="field">
+            <label for="targetKC" data-i18n="targetLabel">
+                DANH SÁCH KC CẦN TÍNH
+            </label>
+            <textarea id="targetKC"
+                placeholder="VD: 4/19/49/99/199/299/399/599"
+                data-i18n-placeholder="targetPlaceholder"
+                spellcheck="false" autocomplete="off">4/19/49/99/199/299/399/599</textarea>
+            <div class="hint" data-i18n="targetHint">
+                Nhập KC cách nhau bằng +, / hoặc dấu phẩy.
+                Ví dụ: 4/19/49/99/199/299/399/599
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="currentKC" data-i18n="currentLabel">
+                KC HIỆN CÓ TRONG GAME
+            </label>
+            <input id="currentKC" type="text" inputmode="numeric"
+                placeholder="Nhập KC hiện có, VD: 500"
+                data-i18n-placeholder="currentPlaceholder"
+                value="0" autocomplete="off">
+        </div>
+
+        <button class="btn btn-primary calculate-btn" id="calculateBtn">
+            <span>⚡</span>
+            <span data-i18n="calculateButton">TÍNH KC NGAY</span>
+        </button>
+        <div id="inputStatus" class="status" aria-live="polite"></div>
+    </section>
+
+    <section class="panel">
+        <h2 class="section-heading">
+            <span class="section-icon">💳</span>
+            <span data-i18n="tableHeading">BẢNG QUY ĐỔI THẺ NẠP</span>
+        </h2>
+        <p class="section-note" data-i18n="tableNote">
+            BẢNG GIÁ KC ĐƯỢC SỬ DỤNG ĐỂ TÍNH TOÁN
+        </p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th data-i18n="moneyHeader">MỆNH GIÁ</th>
+                        <th data-i18n="gemHeader">KIM CƯƠNG</th>
+                    </tr>
+                </thead>
+                <tbody id="cardTable"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="panel result" id="resultPanel">
+        <h2 class="section-heading">
+            <span class="section-icon">🏆</span>
+            <span data-i18n="resultHeading">KẾT QUẢ TÍNH KC</span>
+        </h2>
+
+        <div class="result-top">
+            <div class="result-top-label" data-i18n="rewardLabel">
+                💎 KC NHẬN ĐƯỢC TỪ THẺ NẠP
+            </div>
+            <div class="result-top-value" id="rewardResult">0 💎</div>
+        </div>
+
+        <div class="result-row">
+            <div class="result-row-label" data-i18n="moneyLabel">
+                💰 TỔNG TIỀN NẠP
+            </div>
+            <div class="result-row-value gold" id="moneyResult">0 ₫</div>
+        </div>
+
+        <div class="result-row">
+            <div class="result-row-label" data-i18n="surplusLabel">
+                💎 SỐ DƯ KIM CƯƠNG
+            </div>
+            <div class="result-row-value green" id="surplusResult">0 💎</div>
+        </div>
+
+        <div class="copy-preview">
+            <div class="copy-preview-title" data-i18n="copyPreviewTitle">
+                NỘI DUNG SAO CHÉP
+            </div>
+            <pre id="copyPreview"></pre>
+        </div>
+
+        <button class="btn btn-copy copy-btn" id="copyBtn">
+            <span>📋</span>
+            <span data-i18n="copyButton">SAO CHÉP KẾT QUẢ</span>
+        </button>
+        <div class="status" id="copyStatus" aria-live="polite"></div>
+    </section>
+
+    <footer class="footer">
+        <div class="copyright">© TÁO GAMING VN 🔥</div>
+        <div class="tiktok">TikTok: @taogamingffvn</div>
+        <div class="footer-note" data-i18n="footerNote">
+            CÔNG CỤ HỖ TRỢ TÍNH TOÁN KC<br>
+            KHÔNG LIÊN KẾT HOẶC XÁC NHẬN GIAO DỊCH VỚI GAME
+        </div>
+    </footer>
+
+</main>
+
+<script>
+"use strict";
+
+/* ==========================================
+   1. BẢNG GIÁ KC - GIỮ NGUYÊN DỮ LIỆU GỐC
+========================================== */
+const CARDS = [
+    { money: 5000,   kc: 25 },
+    { money: 10000,  kc: 51 },
+    { money: 20000,  kc: 113 },
+    { money: 50000,  kc: 283 },
+    { money: 100000, kc: 566 },
+    { money: 200000, kc: 1132 },
+    { money: 500000, kc: 2830 }
+];
+
+const $ = id => document.getElementById(id);
+
+const formatNumber = n =>
+    Math.round(n).toLocaleString("en-US");
+
+const formatMoney = n =>
+    formatNumber(n) + " ₫";
+
+const formatKC = n =>
+    formatNumber(n) + " 💎";
+
+let lastCopyText = "";
+let hasCalculated = false;
+let lastPlan = null;
+
+/* ==========================================
+   2. NHẬN DẠNG THIẾT BỊ - KHÔNG HIỂN THỊ
+========================================== */
+function detectDevice() {
+    const ua = navigator.userAgent || "";
+    const platform = navigator.userAgentData?.platform || navigator.platform || "";
+
+    const isIPad =
+        /iPad/i.test(ua) ||
+        (platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+    const isIPhone = /iPhone|iPod/i.test(ua);
+    const isAndroid = /Android/i.test(ua);
+    const isMobile = /Mobi|Mobile/i.test(ua);
+
+    let type = "desktop";
+    let os = "unknown";
+    let model = "unknown";
+
+    if (isIPad) {
+        type = "tablet";
+        os = "iPadOS";
+    } else if (isIPhone) {
+        type = "mobile";
+        os = "iOS";
+    } else if (isAndroid) {
+        type = isMobile ? "mobile" : "tablet";
+        os = "Android";
+    } else if (/Windows/i.test(platform + " " + ua)) {
+        type = "desktop";
+        os = "Windows";
+    } else if (/Mac/i.test(platform + " " + ua)) {
+        type = "desktop";
+        os = "macOS";
+    } else if (/Linux/i.test(platform + " " + ua)) {
+        type = "desktop";
+        os = "Linux";
+    }
+
+    /*
+      Không thể xác định chắc chắn đời iPhone chỉ từ trình duyệt.
+      Không tự gán đời máy khi không có thông tin đáng tin cậy.
+    */
+    if (isIPhone) model = "iPhone (model not verified)";
+    else if (isIPad) model = "iPad";
+    else if (isAndroid) model = "Android device";
+
+    return {
+        type,
+        os,
+        model,
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+        language: navigator.language || "vi-VN"
+    };
+}
+
+/* Dữ liệu chỉ dùng nội bộ; không gửi lên máy chủ. */
+const DEVICE_INFO = detectDevice();
+
+/* ==========================================
+   3. HỆ THỐNG 6 NGÔN NGỮ
+========================================== */
+const TRANSLATIONS = {
+    vi: {
+        languageLabel: "🌐 Ngôn ngữ",
+        titleFirst: "TÍNH KC",
+        titleLast: "GAME",
+        subtitle: "CÔNG CỤ TÍNH KIM CƯƠNG TỰ ĐỘNG",
+        inputHeading: "NHẬP THÔNG TIN",
+        targetLabel: "DANH SÁCH KC CẦN TÍNH",
+        targetPlaceholder: "VD: 4/19/49/99/199/299/399/599",
+        targetHint: "Nhập KC cách nhau bằng +, / hoặc dấu phẩy. Ví dụ: 4/19/49/99/199/299/399/599",
+        currentLabel: "KC HIỆN CÓ TRONG GAME",
+        currentPlaceholder: "Nhập KC hiện có, VD: 500",
+        calculateButton: "TÍNH KC NGAY",
+        tableHeading: "BẢNG QUY ĐỔI THẺ NẠP",
+        tableNote: "BẢNG GIÁ KC ĐƯỢC SỬ DỤNG ĐỂ TÍNH TOÁN",
+        moneyHeader: "MỆNH GIÁ",
+        gemHeader: "KIM CƯƠNG",
+        resultHeading: "KẾT QUẢ TÍNH KC",
+        rewardLabel: "💎 KC NHẬN ĐƯỢC TỪ THẺ NẠP",
+        moneyLabel: "💰 TỔNG TIỀN NẠP",
+        surplusLabel: "💎 SỐ DƯ KIM CƯƠNG",
+        copyPreviewTitle: "NỘI DUNG SAO CHÉP",
+        copyButton: "SAO CHÉP KẾT QUẢ",
+        copiedButton: "ĐÃ SAO CHÉP KẾT QUẢ",
+        footerNote: "CÔNG CỤ HỖ TRỢ TÍNH TOÁN KC<br>KHÔNG LIÊN KẾT HOẶC XÁC NHẬN GIAO DỊCH VỚI GAME",
+        success: "✓ TÍNH KC THÀNH CÔNG",
+        copied: "✓ ĐÃ SAO CHÉP KẾT QUẢ!",
+        noResult: "Vui lòng tính KC trước.",
+        copyFailed: "Không thể tự động sao chép. Hãy thử lại.",
+        invalidCurrent: "KC hiện có phải là số nguyên không âm.",
+        currentTooLarge: "Số KC hiện có vượt giới hạn.",
+        enterTarget: "Vui lòng nhập danh sách KC cần tính.",
+        invalidTarget: "Danh sách KC không hợp lệ.",
+        invalidGem: "KC không hợp lệ: ",
+        gemTooLarge: "Một giá trị KC vượt giới hạn.",
+        totalTooLarge: "Tổng KC vượt giới hạn.",
+        targetTooLarge: "KC còn thiếu quá lớn để tính trực tiếp. Vui lòng kiểm tra lại dữ liệu.",
+        noPlan: "Không tìm được phương án nạp phù hợp.",
+        calculationFailed: "Không thể hoàn tất phép tính.",
+        planFailed: "Không thể xác định phương án nạp.",
+        genericError: "Đã xảy ra lỗi. Vui lòng kiểm tra dữ liệu."
+    },
+
+    en: {
+        languageLabel: "🌐 Language",
+        titleFirst: "DIAMOND",
+        titleLast: "CALCULATOR",
+        subtitle: "AUTOMATIC FREE FIRE DIAMOND CALCULATOR",
+        inputHeading: "ENTER DETAILS",
+        targetLabel: "DIAMONDS NEEDED",
+        targetPlaceholder: "e.g. 4/19/49/99/199/299/399/599",
+        targetHint: "Separate values with +, / or commas. Example: 4/19/49/99/199/299/399/599",
+        currentLabel: "CURRENT DIAMONDS",
+        currentPlaceholder: "Enter current diamonds, e.g. 500",
+        calculateButton: "CALCULATE NOW",
+        tableHeading: "TOP-UP PRICE TABLE",
+        tableNote: "DIAMOND VALUES USED FOR CALCULATION",
+        moneyHeader: "PRICE",
+        gemHeader: "DIAMONDS",
+        resultHeading: "CALCULATION RESULTS",
+        rewardLabel: "💎 DIAMONDS FROM TOP-UP",
+        moneyLabel: "💰 TOTAL TOP-UP COST",
+        surplusLabel: "💎 REMAINING DIAMONDS",
+        copyPreviewTitle: "COPY CONTENT",
+        copyButton: "COPY RESULTS",
+        copiedButton: "RESULTS COPIED",
+        footerNote: "DIAMOND CALCULATION TOOL<br>NOT AFFILIATED WITH OR ENDORSED BY THE GAME",
+        success: "✓ CALCULATION SUCCESSFUL",
+        copied: "✓ RESULTS COPIED!",
+        noResult: "Please calculate first.",
+        copyFailed: "Automatic copying failed. Please try again.",
+        invalidCurrent: "Current diamonds must be a non-negative integer.",
+        currentTooLarge: "Current diamond count exceeds the limit.",
+        enterTarget: "Please enter the required diamond list.",
+        invalidTarget: "Invalid diamond list.",
+        invalidGem: "Invalid diamond value: ",
+        gemTooLarge: "A diamond value exceeds the limit.",
+        totalTooLarge: "Total diamonds exceed the limit.",
+        targetTooLarge: "The missing diamond amount is too large to calculate directly.",
+        noPlan: "No suitable top-up plan found.",
+        calculationFailed: "Unable to complete the calculation.",
+        planFailed: "Unable to determine the top-up plan.",
+        genericError: "An error occurred. Please check your input."
+    },
+
+    th: {
+        languageLabel: "🌐 ภาษา",
+        titleFirst: "คำนวณเพชร",
+        titleLast: "เกม",
+        subtitle: "เครื่องมือคำนวณเพชร FREE FIRE อัตโนมัติ",
+        inputHeading: "กรอกข้อมูล",
+        targetLabel: "รายการเพชรที่ต้องการ",
+        targetPlaceholder: "เช่น 4/19/49/99/199/299/399/599",
+        targetHint: "คั่นตัวเลขด้วย +, / หรือจุลภาค",
+        currentLabel: "เพชรที่มีอยู่ในเกม",
+        currentPlaceholder: "กรอกจำนวนเพชร เช่น 500",
+        calculateButton: "คำนวณเพชร",
+        tableHeading: "ตารางราคาเติมเงิน",
+        tableNote: "ราคาเพชรที่ใช้ในการคำนวณ",
+        moneyHeader: "ราคา",
+        gemHeader: "เพชร",
+        resultHeading: "ผลการคำนวณ",
+        rewardLabel: "💎 เพชรที่ได้รับจากการเติม",
+        moneyLabel: "💰 ยอดเติมทั้งหมด",
+        surplusLabel: "💎 เพชรคงเหลือ",
+        copyPreviewTitle: "ข้อความที่จะคัดลอก",
+        copyButton: "คัดลอกผลลัพธ์",
+        copiedButton: "คัดลอกแล้ว",
+        footerNote: "เครื่องมือคำนวณเพชร<br>ไม่มีส่วนเกี่ยวข้องกับเกม",
+        success: "✓ คำนวณสำเร็จ",
+        copied: "✓ คัดลอกผลลัพธ์แล้ว!",
+        noResult: "กรุณาคำนวณก่อน",
+        copyFailed: "ไม่สามารถคัดลอกอัตโนมัติได้ กรุณาลองอีกครั้ง",
+        invalidCurrent: "จำนวนเพชรต้องเป็นจำนวนเต็มที่ไม่ติดลบ",
+        currentTooLarge: "จำนวนเพชรเกินขีดจำกัด",
+        enterTarget: "กรุณากรอกรายการเพชรที่ต้องการ",
+        invalidTarget: "รายการเพชรไม่ถูกต้อง",
+        invalidGem: "จำนวนเพชรไม่ถูกต้อง: ",
+        gemTooLarge: "จำนวนเพชรเกินขีดจำกัด",
+        totalTooLarge: "จำนวนเพชรรวมเกินขีดจำกัด",
+        targetTooLarge: "จำนวนเพชรที่ขาดมากเกินไปสำหรับการคำนวณ",
+        noPlan: "ไม่พบแผนเติมเงินที่เหมาะสม",
+        calculationFailed: "ไม่สามารถคำนวณให้เสร็จได้",
+        planFailed: "ไม่สามารถระบุแผนเติมเงินได้",
+        genericError: "เกิดข้อผิดพลาด กรุณาตรวจสอบข้อมูล"
+    },
+
+    zh: {
+        languageLabel: "🌐 语言",
+        titleFirst: "钻石",
+        titleLast: "计算器",
+        subtitle: "FREE FIRE 钻石自动计算工具",
+        inputHeading: "输入信息",
+        targetLabel: "所需钻石列表",
+        targetPlaceholder: "例如：4/19/49/99/199/299/399/599",
+        targetHint: "使用 +、/ 或逗号分隔数字。",
+        currentLabel: "游戏中现有钻石",
+        currentPlaceholder: "输入现有钻石，例如 500",
+        calculateButton: "立即计算",
+        tableHeading: "充值价格表",
+        tableNote: "计算所使用的钻石价格",
+        moneyHeader: "价格",
+        gemHeader: "钻石",
+        resultHeading: "计算结果",
+        rewardLabel: "💎 充值获得的钻石",
+        moneyLabel: "💰 充值总金额",
+        surplusLabel: "💎 剩余钻石",
+        copyPreviewTitle: "复制内容",
+        copyButton: "复制结果",
+        copiedButton: "已复制结果",
+        footerNote: "钻石计算工具<br>与游戏无关联，也不代表游戏官方",
+        success: "✓ 计算成功",
+        copied: "✓ 结果已复制！",
+        noResult: "请先计算钻石。",
+        copyFailed: "无法自动复制，请重试。",
+        invalidCurrent: "现有钻石必须是非负整数。",
+        currentTooLarge: "现有钻石数量超出限制。",
+        enterTarget: "请输入所需钻石列表。",
+        invalidTarget: "钻石列表无效。",
+        invalidGem: "无效的钻石数值：",
+        gemTooLarge: "钻石数值超出限制。",
+        totalTooLarge: "钻石总数超出限制。",
+        targetTooLarge: "缺少的钻石数量过大，无法直接计算。",
+        noPlan: "找不到合适的充值方案。",
+        calculationFailed: "无法完成计算。",
+        planFailed: "无法确定充值方案。",
+        genericError: "发生错误，请检查输入。"
+    },
+
+    id: {
+        languageLabel: "🌐 Bahasa",
+        titleFirst: "HITUNG",
+        titleLast: "DIAMOND",
+        subtitle: "ALAT HITUNG DIAMOND FREE FIRE OTOMATIS",
+        inputHeading: "MASUKKAN DATA",
+        targetLabel: "DAFTAR DIAMOND YANG DIBUTUHKAN",
+        targetPlaceholder: "Contoh: 4/19/49/99/199/299/399/599",
+        targetHint: "Pisahkan angka dengan +, / atau koma.",
+        currentLabel: "DIAMOND SAAT INI",
+        currentPlaceholder: "Masukkan diamond saat ini, mis. 500",
+        calculateButton: "HITUNG SEKARANG",
+        tableHeading: "TABEL HARGA TOP UP",
+        tableNote: "HARGA DIAMOND UNTUK PERHITUNGAN",
+        moneyHeader: "HARGA",
+        gemHeader: "DIAMOND",
+        resultHeading: "HASIL PERHITUNGAN",
+        rewardLabel: "💎 DIAMOND DARI TOP UP",
+        moneyLabel: "💰 TOTAL BIAYA TOP UP",
+        surplusLabel: "💎 SISA DIAMOND",
+        copyPreviewTitle: "KONTEN YANG DISALIN",
+        copyButton: "SALIN HASIL",
+        copiedButton: "HASIL TERSALIN",
+        footerNote: "ALAT BANTU PERHITUNGAN DIAMOND<br>TIDAK BERAFILIASI DENGAN GAME",
+        success: "✓ PERHITUNGAN BERHASIL",
+        copied: "✓ HASIL BERHASIL DISALIN!",
+        noResult: "Silakan hitung terlebih dahulu.",
+        copyFailed: "Penyalinan otomatis gagal. Silakan coba lagi.",
+        invalidCurrent: "Diamond saat ini harus berupa bilangan bulat nonnegatif.",
+        currentTooLarge: "Jumlah diamond saat ini melebihi batas.",
+        enterTarget: "Masukkan daftar diamond yang dibutuhkan.",
+        invalidTarget: "Daftar diamond tidak valid.",
+        invalidGem: "Jumlah diamond tidak valid: ",
+        gemTooLarge: "Nilai diamond melebihi batas.",
+        totalTooLarge: "Total diamond melebihi batas.",
+        targetTooLarge: "Jumlah diamond yang kurang terlalu besar untuk dihitung langsung.",
+        noPlan: "Tidak ditemukan paket top up yang sesuai.",
+        calculationFailed: "Perhitungan tidak dapat diselesaikan.",
+        planFailed: "Paket top up tidak dapat ditentukan.",
+        genericError: "Terjadi kesalahan. Periksa kembali data."
+    },
+
+    hi: {
+        languageLabel: "🌐 भाषा",
+        titleFirst: "डायमंड",
+        titleLast: "कैलकुलेटर",
+        subtitle: "FREE FIRE डायमंड की स्वचालित गणना",
+        inputHeading: "जानकारी दर्ज करें",
+        targetLabel: "आवश्यक डायमंड की सूची",
+        targetPlaceholder: "उदाहरण: 4/19/49/99/199/299/399/599",
+        targetHint: "+, / या कॉमा से संख्याओं को अलग करें।",
+        currentLabel: "गेम में मौजूदा डायमंड",
+        currentPlaceholder: "मौजूदा डायमंड दर्ज करें, जैसे 500",
+        calculateButton: "अभी गणना करें",
+        tableHeading: "टॉप-अप मूल्य तालिका",
+        tableNote: "गणना के लिए उपयोग किए गए डायमंड मूल्य",
+        moneyHeader: "कीमत",
+        gemHeader: "डायमंड",
+        resultHeading: "गणना का परिणाम",
+        rewardLabel: "💎 टॉप-अप से मिलने वाले डायमंड",
+        moneyLabel: "💰 कुल टॉप-अप लागत",
+        surplusLabel: "💎 शेष डायमंड",
+        copyPreviewTitle: "कॉपी की जाने वाली सामग्री",
+        copyButton: "परिणाम कॉपी करें",
+        copiedButton: "परिणाम कॉपी हो गया",
+        footerNote: "डायमंड गणना उपकरण<br>गेम से संबद्ध नहीं है",
+        success: "✓ गणना सफल",
+        copied: "✓ परिणाम कॉपी हो गया!",
+        noResult: "कृपया पहले गणना करें।",
+        copyFailed: "स्वचालित कॉपी विफल हुई। फिर से प्रयास करें।",
+        invalidCurrent: "मौजूदा डायमंड गैर-ऋणात्मक पूर्णांक होने चाहिए।",
+        currentTooLarge: "मौजूदा डायमंड की संख्या सीमा से अधिक है।",
+        enterTarget: "आवश्यक डायमंड की सूची दर्ज करें।",
+        invalidTarget: "डायमंड सूची अमान्य है।",
+        invalidGem: "अमान्य डायमंड मान: ",
+        gemTooLarge: "डायमंड मान सीमा से अधिक है।",
+        totalTooLarge: "कुल डायमंड सीमा से अधिक हैं।",
+        targetTooLarge: "गुम डायमंड की संख्या सीधे गणना करने के लिए बहुत बड़ी है।",
+        noPlan: "उपयुक्त टॉप-अप योजना नहीं मिली।",
+        calculationFailed: "गणना पूरी नहीं हो सकी।",
+        planFailed: "टॉप-अप योजना निर्धारित नहीं हो सकी।",
+        genericError: "त्रुटि हुई। कृपया जानकारी जाँचें।"
+    }
+};
+
+/* ==========================================
+   4. NGÔN NGỮ TỰ ĐỘNG VÀ CHUYỂN ĐỔI
+========================================== */
+function detectLanguage() {
+    const languages = navigator.languages || [navigator.language || "vi"];
+
+    for (const language of languages) {
+        const code = language.toLowerCase();
+
+        if (code.startsWith("vi")) return "vi";
+        if (code.startsWith("en")) return "en";
+        if (code.startsWith("th")) return "th";
+        if (code.startsWith("zh")) return "zh";
+        if (code.startsWith("id")) return "id";
+        if (code.startsWith("hi")) return "hi";
+    }
+
+    return "vi";
+}
+
+let currentLanguage = detectLanguage();
+
+function t(key) {
+    return TRANSLATIONS[currentLanguage][key]
+        ?? TRANSLATIONS.vi[key]
+        ?? key;
+}
+
+function applyLanguage(language) {
+    if (!TRANSLATIONS[language]) language = "vi";
+
+    currentLanguage = language;
+    document.documentElement.lang = language;
+    $("languageSelect").value = language;
+
+    document.querySelectorAll("[data-i18n]").forEach(element => {
+        const key = element.dataset.i18n;
+        if (TRANSLATIONS[language][key] !== undefined) {
+            element.innerHTML = TRANSLATIONS[language][key];
+        }
+    });
+
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
+        const key = element.dataset.i18nPlaceholder;
+        if (TRANSLATIONS[language][key] !== undefined) {
+            element.placeholder = TRANSLATIONS[language][key];
+        }
+    });
+
+    $("languageSelect").setAttribute(
+        "aria-label",
+        t("languageLabel").replace("🌐 ", "")
+    );
+
+    renderCards();
+
+    if (hasCalculated) {
+        calculateKC();
+    } else {
+        resetCopyButton();
+    }
+}
+
+$("languageSelect").addEventListener("change", event => {
+    applyLanguage(event.target.value);
+});
+
+/* ==========================================
+   5. HIỂN THỊ BẢNG THẺ NẠP
+========================================== */
+function renderCards() {
+    $("cardTable").innerHTML = CARDS.map(card => `
+        <tr>
+            <td class="money-value">${formatMoney(card.money)}</td>
+            <td class="gem-value">${formatNumber(card.kc)} 💎</td>
+        </tr>
+    `).join("");
+}
+
+/* ==========================================
+   6. ĐỌC DỮ LIỆU KC
+========================================== */
+function parseCurrentKC(value) {
+    const cleaned = String(value).trim().replace(/[.,\s]/g, "");
+
+    if (cleaned === "") return 0;
+
+    if (!/^\d+$/.test(cleaned)) {
+        throw new Error(t("invalidCurrent"));
+    }
+
+    const number = Number(cleaned);
+
+    if (!Number.isSafeInteger(number)) {
+        throw new Error(t("currentTooLarge"));
+    }
+
+    return number;
+}
+
+function parseTargetKC(value) {
+    const text = String(value).trim();
+
+    if (!text) {
+        throw new Error(t("enterTarget"));
+    }
+
+    const parts = text.split(/[+,/;\s]+/).filter(Boolean);
+
+    if (parts.length === 0) {
+        throw new Error(t("invalidTarget"));
+    }
+
+    const numbers = parts.map(part => {
+        const normalized = part.replace(/\./g, "");
+
+        if (!/^\d+$/.test(normalized)) {
+            throw new Error(t("invalidGem") + part);
+        }
+
+        const n = Number(normalized);
+
+        if (!Number.isSafeInteger(n)) {
+            throw new Error(t("gemTooLarge"));
+        }
+
+        return n;
+    });
+
+    const total = numbers.reduce((sum, n) => sum + n, 0);
+
+    if (!Number.isSafeInteger(total)) {
+        throw new Error(t("totalTooLarge"));
+    }
+
+    return { numbers, total };
+}
+
+/* ==========================================
+   7. THUẬT TOÁN TÌM PHƯƠNG ÁN NẠP
+========================================== */
+function findBestPlan(target) {
+    if (target === 0) {
+        return {
+            money: 0,
+            reward: 0,
+            counts: Array(CARDS.length).fill(0)
+        };
+    }
+
+    if (target > 1000000) {
+        throw new Error(t("targetTooLarge"));
+    }
+
+    const INF = Number.MAX_SAFE_INTEGER;
+    const dp = new Float64Array(target + 1);
+    const previous = new Int32Array(target + 1);
+    const chosen = new Int16Array(target + 1);
+
+    dp.fill(INF);
+    previous.fill(-1);
+    chosen.fill(-1);
+    dp[0] = 0;
+
+    for (let state = 0; state < target; state++) {
+        if (dp[state] === INF) continue;
+
+        for (let i = 0; i < CARDS.length; i++) {
+            const card = CARDS[i];
+            const next = Math.min(target, state + card.kc);
+            const candidate = dp[state] + card.money;
+
+            if (candidate < dp[next]) {
+                dp[next] = candidate;
+                previous[next] = state;
+                chosen[next] = i;
+            }
+        }
+    }
+
+    if (dp[target] === INF) {
+        throw new Error(t("noPlan"));
+    }
+
+    const counts = Array(CARDS.length).fill(0);
+    let state = target;
+    let steps = 0;
+
+    while (state > 0) {
+        if (++steps > target + 1) {
+            throw new Error(t("calculationFailed"));
+        }
+
+        const index = chosen[state];
+        const prev = previous[state];
+
+        if (index < 0 || prev < 0 || prev >= state) {
+            throw new Error(t("planFailed"));
+        }
+
+        counts[index]++;
+        state = prev;
+    }
+
+    const reward = counts.reduce(
+        (sum, count, i) => sum + count * CARDS[i].kc, 0
+    );
+
+    const money = counts.reduce(
+        (sum, count, i) => sum + count * CARDS[i].money, 0
+    );
+
+    return { money, reward, counts };
+}
+
+/* ==========================================
+   8. NỘI DUNG SAO CHÉP ĐA NGÔN NGỮ
+========================================== */
+function buildCopyText(reward, money, surplus) {
+    const headings = {
+        vi: {
+            title: "CÔNG CỤ TÍNH KC - TÁO GAMING VN",
+            reward: "KC nhận được",
+            money: "Tổng tiền nạp",
+            surplus: "Số dư kim cương"
+        },
+        en: {
+            title: "DIAMOND CALCULATOR - TAO GAMING VN",
+            reward: "Diamonds received",
+            money: "Total top-up cost",
+            surplus: "Remaining diamonds"
+        },
+        th: {
+            title: "เครื่องคำนวณเพชร - TAO GAMING VN",
+            reward: "เพชรที่ได้รับ",
+            money: "ยอดเติมทั้งหมด",
+            surplus: "เพชรคงเหลือ"
+        },
+        zh: {
+            title: "钻石计算器 - TAO GAMING VN",
+            reward: "获得钻石",
+            money: "充值总金额",
+            surplus: "剩余钻石"
+        },
+        id: {
+            title: "KALKULATOR DIAMOND - TAO GAMING VN",
+            reward: "Diamond diterima",
+            money: "Total biaya top up",
+            surplus: "Sisa diamond"
+        },
+        hi: {
+            title: "डायमंड कैलकुलेटर - TAO GAMING VN",
+            reward: "प्राप्त डायमंड",
+            money: "कुल टॉप-अप लागत",
+            surplus: "शेष डायमंड"
+        }
+    };
+
+    const labels = headings[currentLanguage] || headings.vi;
+
+    return [
+        "----- " + labels.title + " -----",
+        "•  " + labels.reward + ": " + formatNumber(reward) + " 💎",
+        "•  " + labels.money + ": " + formatMoney(money),
+        "•  " + labels.surplus + ": " + formatNumber(surplus) + " 💎"
+    ].join("\n");
+}
+
+/* ==========================================
+   9. TÍNH TOÁN VÀ CẬP NHẬT KẾT QUẢ
+========================================== */
+function calculateKC() {
+    $("inputStatus").textContent = "";
+    $("inputStatus").classList.remove("error");
+    $("copyStatus").textContent = "";
+    $("copyStatus").classList.remove("error");
+
+    try {
+        const parsed = parseTargetKC($("targetKC").value);
+        const current = parseCurrentKC($("currentKC").value);
+        const missing = Math.max(0, parsed.total - current);
+
+        const plan = findBestPlan(missing);
+        const surplus = current + plan.reward - parsed.total;
+
+        $("rewardResult").textContent = formatKC(plan.reward);
+        $("moneyResult").textContent = formatMoney(plan.money);
+        $("surplusResult").textContent = formatKC(surplus);
+
+        lastPlan = {
+            reward: plan.reward,
+            money: plan.money,
+            surplus
+        };
+
+        lastCopyText = buildCopyText(
+            plan.reward,
+            plan.money,
+            surplus
+        );
+
+        $("copyPreview").textContent = lastCopyText;
+        $("resultPanel").classList.add("show");
+        hasCalculated = true;
+
+        $("inputStatus").textContent = t("success");
+        resetCopyButton(false);
+    } catch (error) {
+        $("resultPanel").classList.remove("show");
+        $("copyPreview").textContent = "";
+        lastCopyText = "";
+        lastPlan = null;
+        hasCalculated = false;
+
+        $("inputStatus").textContent =
+            "⚠ " + (error.message || t("genericError"));
+        $("inputStatus").classList.add("error");
+    }
+}
+
+/* ==========================================
+   10. SAO CHÉP KẾT QUẢ
+========================================== */
+function resetCopyButton(clearStatus = true) {
+    $("copyBtn").innerHTML =
+        "<span>📋</span><span>" + t("copyButton") + "</span>";
+
+    if (clearStatus) {
+        $("copyStatus").textContent = "";
+        $("copyStatus").classList.remove("error");
+    }
+}
+
+async function copyResult() {
+    $("copyStatus").textContent = "";
+    $("copyStatus").classList.remove("error");
+
+    if (!lastCopyText || !hasCalculated) {
+        $("copyStatus").textContent = t("noResult");
+        $("copyStatus").classList.add("error");
+        return;
+    }
+
+    const textToCopy = lastCopyText;
+
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(textToCopy);
+        } else {
+            const textarea = document.createElement("textarea");
+            textarea.value = textToCopy;
+            textarea.setAttribute("readonly", "");
+            textarea.setAttribute("aria-hidden", "true");
+            textarea.style.position = "fixed";
+            textarea.style.top = "0";
+            textarea.style.left = "-9999px";
+            textarea.style.opacity = "0";
+
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            textarea.setSelectionRange(0, textarea.value.length);
+
+            const success = document.execCommand("copy");
+            textarea.remove();
+
+            if (!success) {
+                throw new Error("copy-failed");
+            }
+        }
+
+        $("copyStatus").textContent = t("copied");
+        $("copyBtn").innerHTML =
+            "<span>✓</span><span>" + t("copiedButton") + "</span>";
+        $("copyStatus").classList.remove("error");
+    } catch (error) {
+        $("copyStatus").textContent = t("copyFailed");
+        $("copyStatus").classList.add("error");
+    }
+}
+
+/* ==========================================
+   11. TỰ ĐỘNG TÍNH LẠI KHI NHẬP DỮ LIỆU
+========================================== */
+function handleInputChange() {
+    resetCopyButton();
+
+    if (hasCalculated) {
+        calculateKC();
+    }
+}
+
+$("targetKC").addEventListener("input", handleInputChange);
+$("currentKC").addEventListener("input", handleInputChange);
+$("calculateBtn").addEventListener("click", calculateKC);
+$("copyBtn").addEventListener("click", copyResult);
+
+/* ==========================================
+   12. KHỞI TẠO
+========================================== */
+applyLanguage(currentLanguage);
+renderCards();
+
+/*
+ * DEVICE_INFO có thể dùng cho giao diện responsive hoặc
+ * phân tích nội bộ trong tương lai. Không hiển thị thiết bị
+ * và không gửi thông tin thiết bị tới bất kỳ máy chủ nào.
+ */
+</script>
+</body>
+  </html>
